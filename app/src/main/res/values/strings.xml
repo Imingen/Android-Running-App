@@ -8,4 +8,6 @@
     <string name="mainPage">Home</string>
     <string name="drawer_open">\"Drawer open\"</string>
     <string name="drawer_close">Drawer closed</string>
+    <string name="home_activity_label">WorkoutPal HOME</string>
+    <string name="history_activity_label">WorkoutPal HISTORY</string>
 </resources>

@@ -12,6 +12,4 @@
         android:background="@drawable/alex_running_cropped"
         android:layout_marginTop="25dp"
         />
-
-
 </RelativeLayout>
