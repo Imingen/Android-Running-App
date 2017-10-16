@@ -6,4 +6,6 @@
     <color name="colorNavBackground">#106e5b</color>
     <color name="colorTabs">#bcdfdf</color>
     <color name="colorTabSelected">#ffffff</color>
+    <color name="date">#999999</color>
+    <color name="distance">#222222</color>
 </resources>

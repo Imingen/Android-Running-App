@@ -10,6 +10,10 @@ public class Stats {
     private double distance;
 
 
+    public Stats(long timeRunning, double distance) {
+        this.timeRunning = timeRunning;
+        this.distance = distance;
+    }
 
     public long getTimeRunning() {
         return timeRunning;
