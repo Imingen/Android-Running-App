@@ -1,4 +1,4 @@
-package com.example.imingen.workoutpal;
+package com.example.imingen.workoutpal.UI;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
 
 import java.util.ArrayList;

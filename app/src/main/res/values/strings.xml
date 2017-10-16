@@ -15,4 +15,5 @@
     <string name="achievements_tab_text">Achievements</string>
     <string name="history_tab_text">History</string>
     <string name="A_DATE">23.07.2017</string>
+    <string name="cardview_placeholder">Placeholder text</string>
 </resources>

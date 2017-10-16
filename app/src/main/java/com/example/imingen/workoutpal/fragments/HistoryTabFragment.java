@@ -9,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.imingen.workoutpal.HistoryActivity;
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.adapter.HistoryTabAdapter;
 import com.example.imingen.workoutpal.models.Session;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

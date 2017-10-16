@@ -1,22 +1,17 @@
-package com.example.imingen.workoutpal;
+package com.example.imingen.workoutpal.UI;
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.adapter.HistoryPagerAdapter;
-import com.example.imingen.workoutpal.fragments.AchievementsFragment;
+import com.example.imingen.workoutpal.fragments.AchievementsTabFragment;
 import com.example.imingen.workoutpal.fragments.HistoryTabFragment;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -47,7 +42,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager){
         HistoryPagerAdapter adapter = new HistoryPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AchievementsFragment(), "Achievements");
+        adapter.addFragment(new AchievementsTabFragment(), "Achievements");
         adapter.addFragment(new HistoryTabFragment(), "History");
         viewPager.setAdapter(adapter);
     }
