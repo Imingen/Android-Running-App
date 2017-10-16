@@ -1,4 +1,4 @@
-package com.example.imingen.workoutpal;
+package com.example.imingen.workoutpal.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.imingen.workoutpal.HistoryActivity;
+import com.example.imingen.workoutpal.MainActivity;
+import com.example.imingen.workoutpal.R;
 
 public class NavigationDrawerFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
 

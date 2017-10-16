@@ -1,9 +1,21 @@
 package com.example.imingen.workoutpal;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+
+import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Marius on 13.10.2017.
@@ -11,8 +23,8 @@ import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
-    NavigationDrawerFragment navigationDrawerFragment;
+    private Toolbar toolbar;
+    private NavigationDrawerFragment navigationDrawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         setUpDrawer();
     }
+
 
     private void setUpDrawer() {
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
@@ -35,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         navigationDrawerFragment.updateCheckedItem(R.id.nav_main);
         super.onStart();
     }
+
 
 
 }

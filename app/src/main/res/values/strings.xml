@@ -10,4 +10,8 @@
     <string name="drawer_close">Drawer closed</string>
     <string name="home_activity_label">WorkoutPal HOME</string>
     <string name="history_activity_label">WorkoutPal HISTORY</string>
+    <string name="history_tab_placeholder">History tab</string>
+    <string name="achievements_tab_placeholder">Achievement tab</string>
+    <string name="achievements_tab_text">Achievements</string>
+    <string name="history_tab_text">History</string>
 </resources>
