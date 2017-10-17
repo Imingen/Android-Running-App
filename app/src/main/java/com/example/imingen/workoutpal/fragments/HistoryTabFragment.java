@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.adapter.HistoryTabAdapter;
-import com.example.imingen.workoutpal.models.Session;
+import com.example.imingen.workoutpal.models.Run;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class HistoryTabFragment extends Fragment {
 
-    private List<Session> sessionList = Session.sessionExampleData();
+    private List<Run> runList = Run.runExampleData();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -39,7 +39,7 @@ public class HistoryTabFragment extends Fragment {
         recyclerView = view.findViewById(R.id.history_recycler_view);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new HistoryTabAdapter(sessionList);
+        adapter = new HistoryTabAdapter(runList);
         recyclerView.setAdapter(adapter);
 
         return view;

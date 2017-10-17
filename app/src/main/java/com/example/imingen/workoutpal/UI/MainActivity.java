@@ -27,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationDrawerFragment navigationDrawerFragment;
 
+    //ToDo: Add more info to RUN.class. Se detaljert prosjektbeskrivelse. Skal egentlig være en abstrakt klasse. Må hvertfall legge til intervall info
+    //ToDo: Fragment når man trykker på start knappen --> fragment skal kunne velge hvor lang intervall --> gå til selve run aktiviteten
+    //ToDo: I den nye aktiviteten; Implementer logikk for å starte, stoppe og pause et run. Kunne ta tid som minimum
+    // TODO: Implementer riktig backstack
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

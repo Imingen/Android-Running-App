@@ -16,4 +16,5 @@
     <string name="history_tab_text">History</string>
     <string name="A_DATE">23.07.2017</string>
     <string name="cardview_placeholder">Placeholder text</string>
+    <string name="run_button">RUN</string>
 </resources>

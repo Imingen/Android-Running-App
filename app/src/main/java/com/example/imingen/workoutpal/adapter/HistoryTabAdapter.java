@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.imingen.workoutpal.R;
-import com.example.imingen.workoutpal.models.Session;
+import com.example.imingen.workoutpal.models.Run;
 
 import org.w3c.dom.Text;
 
@@ -19,10 +19,10 @@ import java.util.List;
  */
 
 public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.ViewHolder>{
-    private List<Session> sessions;
+    private List<Run> runs;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView date, distance;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView date, distance;
 
         public ViewHolder(View view){
             super(view);
@@ -32,8 +32,8 @@ public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.Vi
     }
 
 
-    public HistoryTabAdapter(List<Session> data) {
-        this.sessions = data;
+    public HistoryTabAdapter(List<Run> data) {
+        this.runs = data;
     }
 
     @Override
@@ -45,14 +45,14 @@ public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Session session = sessions.get(position);
-        holder.date.setText(session.getDateOfSession().toString());
-        holder.distance.setText(String.valueOf(session.getRun().getDistance()));
+        Run run = runs.get(position);
+        holder.date.setText(run.getDateOfRun().toString());
+        holder.distance.setText(String.valueOf(run.getDistance()));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return sessions.size();
+        return runs.size();
     }
 }
