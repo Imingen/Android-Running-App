@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.adapter.AchievementTabAdapter;
 import com.example.imingen.workoutpal.models.Achievement;
-import com.example.imingen.workoutpal.models.Session;
-
 import java.util.List;
 
 public class AchievementsTabFragment extends Fragment {
@@ -34,7 +32,7 @@ public class AchievementsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_achievements, container, false);
         recyclerView = view.findViewById(R.id.achievement_recycler_view);
-        layoutManager = new GridLayoutManager(getContext(), 3);
+        layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new AchievementTabAdapter(ach);
         recyclerView.setAdapter(adapter);
