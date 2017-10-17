@@ -1,5 +1,6 @@
 package com.example.imingen.workoutpal.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -49,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
         dateTW.setText(getCurrentDate());
     }
 
+
+    public void startRun(View view){
+        Intent intent = new Intent(this, RunActivity.class);
+        startActivity(intent);
+    }
 
     private void setUpDrawer() {
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
