@@ -10,11 +10,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -40,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setUpDrawer();
+
+        TextView dateTW = (TextView) findViewById(R.id.dateEditText);
+        dateTW.setText(getCurrentDate());
     }
 
 
@@ -47,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar, R.id.nav_main);
+    }
+
+    private String getCurrentDate() {
+        long date = System.currentTimeMillis();
+        SimpleDateFormat d = new SimpleDateFormat("E MMM dd, yyyy");
+        String dateString = d.format(date);
+        return dateString;
     }
 
     @Override

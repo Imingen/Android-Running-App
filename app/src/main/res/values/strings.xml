@@ -17,4 +17,7 @@
     <string name="A_DATE">23.07.2017</string>
     <string name="cardview_placeholder">Placeholder text</string>
     <string name="run_button">RUN</string>
+    <string name="lap_length_placeholder">Length of lap</string>
+    <string name="number_of_laps_placeholder">Number of laps</string>
+    <string name="date_placeholder">23.09.2017</string>
 </resources>
