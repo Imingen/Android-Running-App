@@ -1,5 +1,8 @@
 package com.example.imingen.workoutpal.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.Random;
  * Created by Marius on 15.10.2017.
  */
 
-public class Run {
+public class Run implements Parcelable{
 
 
     private double timeRunning;
@@ -19,10 +22,10 @@ public class Run {
     private Date dateOfRun;
 
 
-    public Run(double timeRunning, double distance, Date date) {
-        this.timeRunning = timeRunning;
-        this.distance = distance;
+    public Run(Date date, double laplen, int lapnum) {
         this.dateOfRun = date;
+        this.lapLength = laplen;
+        this.numberOfLaps = lapnum;
     }
 
     public static List<Run> runExampleData(){
@@ -37,7 +40,9 @@ public class Run {
             randomValue = 10 + (90 - 10) * r.nextDouble();
             randomDistance = 1 + (25 - 10) * r.nextDouble();
 
-            Run current = new Run(randomValue, randomDistance, d);
+            Run current = new Run(d, 2, 3);
+            current.setDistance(randomDistance);
+            current.setTimeRunning(randomValue);
             run.add(current);
         }
         return run;
@@ -56,6 +61,7 @@ public class Run {
 
     }
 
+    // region getters and setters
     public double getLapLength() {
         return lapLength;
     }
@@ -76,6 +82,14 @@ public class Run {
         return timeRunning;
     }
 
+    public void setTimeRunning(double timeRunning) {
+        this.timeRunning = timeRunning;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
     public double getDistance() {
         return distance;
     }
@@ -87,4 +101,33 @@ public class Run {
     public void setDateOfRun(Date dateOfRun) {
         this.dateOfRun = dateOfRun;
     }
+    // endregion
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(this.dateOfRun.getTime());
+        parcel.writeDouble(this.getLapLength());
+        parcel.writeInt(this.getNumberOfLaps());
+    }
+
+
+    public static final Parcelable.Creator<Run> CREATOR = new Parcelable.Creator<Run>() {
+        @Override
+        public Run createFromParcel(Parcel source) {
+            Date date = new Date(source.readLong());
+            double len = source.readDouble();
+            int num = source.readInt();
+            return new Run(date, len, num);
+        }
+
+        @Override
+        public Run[] newArray(int size) {
+            return new Run[size];
+        }
+    };
 }

@@ -10,11 +10,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
+import com.example.imingen.workoutpal.models.Run;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,9 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private NavigationDrawerFragment navigationDrawerFragment;
+    private String currentDate;
+    //private double lengthOfLaps;
+   // private int numberOfLaps;
+    private SimpleDateFormat d;
+    private EditText nLaps;
+    private EditText lLaps;
 
     //ToDo: Add more info to RUN.class. Se detaljert prosjektbeskrivelse. Skal egentlig være en abstrakt klasse. Må hvertfall legge til intervall info
-    //ToDo: Fragment når man trykker på start knappen --> fragment skal kunne velge hvor lang intervall --> gå til selve run aktiviteten
     //ToDo: I den nye aktiviteten; Implementer logikk for å starte, stoppe og pause et run. Kunne ta tid som minimum
     // TODO: Implementer riktig backstack
 
@@ -46,14 +54,36 @@ public class MainActivity extends AppCompatActivity {
 
         setUpDrawer();
 
+        currentDate = getCurrentDate();
         TextView dateTW = (TextView) findViewById(R.id.dateEditText);
-        dateTW.setText(getCurrentDate());
+        dateTW.setText(currentDate);
+
+        nLaps = (EditText) findViewById(R.id.numberOfLapsEditText);
+        lLaps = (EditText) findViewById(R.id.LapLengthEditText);
+
+
     }
 
 
     public void startRun(View view){
+        Run run = createNewRun();
         Intent intent = new Intent(this, RunActivity.class);
+        intent.putExtra("run", run);
         startActivity(intent);
+    }
+
+    private Run createNewRun() {
+        Date date = null;
+        double lengthOfLaps = Double.parseDouble(String.valueOf(lLaps.getText()));
+        int numberOfLaps = Integer.parseInt(String.valueOf(nLaps.getText()));
+        try {
+            date = d.parse(currentDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            
+        }
+        Run run = new Run(date, lengthOfLaps, numberOfLaps);
+        return run;
     }
 
     private void setUpDrawer() {
@@ -64,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String getCurrentDate() {
         long date = System.currentTimeMillis();
-        SimpleDateFormat d = new SimpleDateFormat("E MMM dd, yyyy");
+        d = new SimpleDateFormat("E MMM dd, yyyy");
         String dateString = d.format(date);
         return dateString;
     }
