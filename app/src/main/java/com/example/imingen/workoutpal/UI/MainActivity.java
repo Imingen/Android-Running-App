@@ -11,9 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationDrawerFragment navigationDrawerFragment;
     private String currentDate;
+    private static final String ERROR_NO_NUMBER_OF_LAPS = "Please enter the desired number of laps";
+    private static final String ERROR_NO_LENGTH_OF_LAPS = "Please enter the desired length of the laps";
     //private double lengthOfLaps;
    // private int numberOfLaps;
     private SimpleDateFormat d;
@@ -67,10 +71,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void startRun(View view){
-        Run run = createNewRun();
-        Intent intent = new Intent(this, RunActivity.class);
-        intent.putExtra("run", run);
-        startActivity(intent);
+        if(lLaps.getText().toString().isEmpty()) {
+            Toast.makeText(getApplicationContext(), ERROR_NO_LENGTH_OF_LAPS, Toast.LENGTH_LONG).show();
+        }
+        else if(nLaps.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), ERROR_NO_NUMBER_OF_LAPS, Toast.LENGTH_LONG).show();
+        }
+        else{
+            Run run = createNewRun();
+            Intent intent = new Intent(this, RunActivity.class);
+            intent.putExtra("run", run);
+            startActivity(intent);
+        }
     }
 
     private Run createNewRun() {
