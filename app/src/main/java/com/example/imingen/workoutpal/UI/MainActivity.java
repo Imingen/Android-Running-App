@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,13 +44,15 @@ public class MainActivity extends AppCompatActivity {
    // private int numberOfLaps;
     private SimpleDateFormat d;
     private EditText nLaps;
-    private EditText lLaps;
+
+    private NumberPicker minutePicker;
+    private NumberPicker secondsPicker;
+
 
     //ToDo: Add more info to RUN.class. Se detaljert prosjektbeskrivelse. Skal egentlig være en abstrakt klasse. Må hvertfall legge til intervall info
     //ToDo: I den nye aktiviteten; Implementer logikk for å starte, stoppe og pause et run. Kunne ta tid som minimum
     // TODO: Implementer riktig backstack
     // TODO: se over om dato er riktig i objektet som blir satt opp i main og sendt til run aktiviteten
-    //TODO: Mulig endre på timer siden Handler er bedre enn countdowntimer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +68,21 @@ public class MainActivity extends AppCompatActivity {
         dateTW.setText(currentDate);
 
         nLaps = (EditText) findViewById(R.id.numberOfLapsEditText);
-        lLaps = (EditText) findViewById(R.id.LapLengthEditText);
 
+        minutePicker = (NumberPicker) findViewById(R.id.lapLengthMinutes);
+        minutePicker.setMinValue(0);
+        minutePicker.setMaxValue(10);
+        minutePicker.setWrapSelectorWheel(true);
+
+        secondsPicker = (NumberPicker) findViewById(R.id.lapLengthSeconds);
+        secondsPicker.setMinValue(0);
+        secondsPicker.setMaxValue(60);
+        secondsPicker.setWrapSelectorWheel(true);
     }
 
 
     public void startRun(View view){
-        if(lLaps.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), ERROR_NO_LENGTH_OF_LAPS, Toast.LENGTH_LONG).show();
-        }
-        else if(nLaps.getText().toString().isEmpty()){
+        if(nLaps.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), ERROR_NO_NUMBER_OF_LAPS, Toast.LENGTH_LONG).show();
         }
         else{
@@ -87,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Run createNewRun() {
         Date date = null;
-        double lengthOfLaps = Double.parseDouble(String.valueOf(lLaps.getText()));
+        double lengthOfLaps = secondsPicker.getValue();
+                //Double.parseDouble(String.valueOf(lLaps.getText()));
+
         int numberOfLaps = Integer.parseInt(String.valueOf(nLaps.getText()));
         try {
             date = d.parse(currentDate);
