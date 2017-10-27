@@ -19,12 +19,16 @@ public class Run implements Parcelable{
     private double distance;
     private double lapLength;
     private int numberOfLaps;
+
+    private int lengthMinutes;
+    private int lengthSeconds;
     private Date dateOfRun;
 
 
-    public Run(Date date, double laplen, int lapnum) {
+    public Run(Date date, int minutes, int seconds, int lapnum) {
         this.dateOfRun = date;
-        this.lapLength = laplen;
+        this.lengthMinutes = minutes;
+        this.lengthSeconds = seconds;
         this.numberOfLaps = lapnum;
     }
 
@@ -40,7 +44,7 @@ public class Run implements Parcelable{
             randomValue = 10 + (90 - 10) * r.nextDouble();
             randomDistance = 1 + (25 - 10) * r.nextDouble();
 
-            Run current = new Run(d, 2, 3);
+            Run current = new Run(d, 2, 15, 3);
             current.setDistance(randomDistance);
             current.setTimeRunning(randomValue);
             run.add(current);
@@ -101,6 +105,23 @@ public class Run implements Parcelable{
     public void setDateOfRun(Date dateOfRun) {
         this.dateOfRun = dateOfRun;
     }
+
+    public int getLengthMinutes() {
+        return lengthMinutes;
+    }
+
+    public void setLengthMinutes(int lengthMinutes) {
+        this.lengthMinutes = lengthMinutes;
+    }
+
+    public int getLengthSeconds() {
+        return lengthSeconds;
+    }
+
+    public void setLengthSeconds(int lengthSeconds) {
+        this.lengthSeconds = lengthSeconds;
+    }
+
     // endregion
 
     @Override
@@ -111,7 +132,8 @@ public class Run implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(this.dateOfRun.getTime());
-        parcel.writeDouble(this.getLapLength());
+        parcel.writeInt(this.getLengthMinutes());
+        parcel.writeInt(this.getLengthSeconds());
         parcel.writeInt(this.getNumberOfLaps());
     }
 
@@ -120,9 +142,10 @@ public class Run implements Parcelable{
         @Override
         public Run createFromParcel(Parcel source) {
             Date date = new Date(source.readLong());
-            double len = source.readDouble();
+            int minutes = source.readInt();
+            int seconds = source.readInt();
             int num = source.readInt();
-            return new Run(date, len, num);
+            return new Run(date, minutes, seconds, num);
         }
 
         @Override

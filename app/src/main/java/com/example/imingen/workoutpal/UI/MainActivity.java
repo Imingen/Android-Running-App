@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         secondsPicker = (NumberPicker) findViewById(R.id.lapLengthSeconds);
         secondsPicker.setMinValue(0);
-        secondsPicker.setMaxValue(60);
+        secondsPicker.setMaxValue(59);
         secondsPicker.setWrapSelectorWheel(true);
     }
 
@@ -95,9 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Run createNewRun() {
         Date date = null;
-        double lengthOfLaps = secondsPicker.getValue();
-                //Double.parseDouble(String.valueOf(lLaps.getText()));
-
+        int minutes = minutePicker.getValue();
+        int seconds = secondsPicker.getValue();
         int numberOfLaps = Integer.parseInt(String.valueOf(nLaps.getText()));
         try {
             date = d.parse(currentDate);
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             
         }
-        Run run = new Run(date, lengthOfLaps, numberOfLaps);
+        Run run = new Run(date, minutes, seconds, numberOfLaps);
         return run;
     }
 
