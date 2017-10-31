@@ -1,8 +1,14 @@
 package com.example.imingen.workoutpal.UI;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -12,7 +18,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.CountdownFragment;
@@ -20,13 +28,24 @@ import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
 import com.example.imingen.workoutpal.models.Run;
 import com.example.imingen.workoutpal.models.RunTimer;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
 public class RunActivity extends AppCompatActivity {
 
     Run run;
     TextView timerTextView;
     TextView runOrPause;
     TextView lapsLefTextView;
+    Button runButton;
     int numberOfLaps;
+    TextToSpeech textToSpeech;
+    Voice voice;
+    Handler handler;
 
     //Timer logic
     int minutes;
@@ -35,7 +54,6 @@ public class RunActivity extends AppCompatActivity {
     String secondString;
     int totalSeconds;
     boolean timeUp;
-    boolean pause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,33 +62,47 @@ public class RunActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
         run = data.getParcelable("run");
+        handler = new Handler();
 
         timerTextView = (TextView) findViewById(R.id.timerTextView);
         runOrPause = (TextView) findViewById(R.id.runOrPauseTextView);
-
+        runButton = (Button) findViewById(R.id.start_run);
         lapsLefTextView = (TextView) findViewById(R.id.lapsLeftTextView);
 
         minutes = run.getLengthMinutes();
         seconds = run.getLengthSeconds();
         numberOfLaps = run.getNumberOfLaps();
-        numberOfLaps = numberOfLaps * 2;
+        numberOfLaps = numberOfLaps * 2 ;
 
+        updateTimer(minutes, seconds);
         lapsLefTextView.setText(Integer.toString(numberOfLaps / 2));
+
+        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.ERROR){
+                    Toast.makeText(getApplicationContext(), "Text to speech not supported on your device", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    textToSpeech.setLanguage(Locale.ENGLISH);
+                    textToSpeech.setSpeechRate(0.9f);
+                }
+            }
+        });
 
     }
 
 
     public void startRun(View view) {
+        runButton.setEnabled(false);
         //Have to have the time in only seconds for easier checking
         totalSeconds = seconds + (minutes * 60);
         //Keep the inital value of totalseconds so that we can reset the timer every lap since all laps are the same length
         final int totalSecondsMemory = totalSeconds;
         timeUp = false;
-        final Handler handler = new Handler();
         Runnable run = new Runnable() {
             @Override
             public void run() {
-
                 //Casting to int will round it down
                 int minutes = (int) totalSeconds / 60;
                 int seconds = totalSeconds - minutes * 60;
@@ -85,22 +117,33 @@ public class RunActivity extends AppCompatActivity {
                 if(totalSeconds == 0 && numberOfLaps > 0){
                     timerTextView.setText("00:00");
                     numberOfLaps--;
+                    if((numberOfLaps % 2)  != 0){
+                        textToSpeech("Pause for" + Integer.toString(totalSecondsMemory) + " seconds");
+                    }
                     totalSeconds = totalSecondsMemory + 1;
                 }
                 //Updates the timer
                 if(timeUp == false){
-                    Log.i("OK", Integer.toString(numberOfLaps));
                     if((numberOfLaps % 2) == 0){
-                        updateTimer(minutes, seconds);
-                        handler.postDelayed(this, 1000);
+                        if(totalSeconds <= 3){
+                            textToSpeech(Integer.toString(totalSeconds));
+                        }
                         runOrPause.setText("RUN!");
                     }
+
                     if((numberOfLaps % 2) != 0) {
-                        updateTimer(minutes, seconds);
-                        handler.postDelayed(this, 1000);
+                        if(totalSeconds == 4){
+                            textToSpeech("Starting in");
+                        }
+                        if(totalSeconds <= 3){
+                            textToSpeech(Integer.toString(totalSeconds));
+                        }
                         runOrPause.setText("PAUSE!");
                         lapsLefTextView.setText(Integer.toString(numberOfLaps / 2));
                     }
+                    updateTimer(minutes, seconds);
+                    handler.postDelayed(this, 1000);
+
                     if(numberOfLaps == 1){
                         handler.removeCallbacks(this);
                         runOrPause.setTextSize(42);
@@ -118,6 +161,27 @@ public class RunActivity extends AppCompatActivity {
 
 
 
+    public void textToSpeech(String text){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ttsGreater21(text);
+        } else {
+            ttsUnder20(text);
+        }
+    }
+
+    //Tatt fra https://stackoverflow.com/questions/27968146/texttospeech-with-api-21
+    @SuppressWarnings("deprecation")
+    private void ttsUnder20(String text) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void ttsGreater21(String text) {
+        String utteranceId=this.hashCode() + "";
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+    }
 
     /**
      * Helper method for updating the timertextview

@@ -48,12 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private NumberPicker minutePicker;
     private NumberPicker secondsPicker;
 
-
-    //ToDo: Add more info to RUN.class. Se detaljert prosjektbeskrivelse. Skal egentlig være en abstrakt klasse. Må hvertfall legge til intervall info
-    //ToDo: I den nye aktiviteten; Implementer logikk for å starte, stoppe og pause et run. Kunne ta tid som minimum
-    // TODO: Implementer riktig backstack
-    // TODO: se over om dato er riktig i objektet som blir satt opp i main og sendt til run aktiviteten
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
