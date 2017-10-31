@@ -1,6 +1,7 @@
 package com.example.imingen.workoutpal.UI;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -37,6 +38,7 @@ import java.util.Set;
 
 public class RunActivity extends AppCompatActivity {
 
+    int ok;
     Run run;
     TextView timerTextView;
     TextView runOrPause;
@@ -44,9 +46,9 @@ public class RunActivity extends AppCompatActivity {
     Button runButton;
     int numberOfLaps;
     TextToSpeech textToSpeech;
-    Voice voice;
     Handler handler;
-
+    FragmentManager fragmentManager;
+    CountdownFragment countdownFragment;
     //Timer logic
     int minutes;
     int seconds;
@@ -62,6 +64,7 @@ public class RunActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
         run = data.getParcelable("run");
+
         handler = new Handler();
 
         timerTextView = (TextView) findViewById(R.id.timerTextView);
@@ -81,7 +84,8 @@ public class RunActivity extends AppCompatActivity {
             @Override
             public void onInit(int status) {
                 if(status == TextToSpeech.ERROR){
-                    Toast.makeText(getApplicationContext(), "Text to speech not supported on your device", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Text to speech not supported on your device",
+                            Toast.LENGTH_LONG).show();
                 }
                 else{
                     textToSpeech.setLanguage(Locale.ENGLISH);
@@ -89,7 +93,6 @@ public class RunActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
 
@@ -97,7 +100,7 @@ public class RunActivity extends AppCompatActivity {
         runButton.setEnabled(false);
         //Have to have the time in only seconds for easier checking
         totalSeconds = seconds + (minutes * 60);
-        //Keep the inital value of totalseconds so that we can reset the timer every lap since all laps are the same length
+        //Keep the inital value of totalseconds so that we can reset the timer every lap since both laps and pauses are the same length
         final int totalSecondsMemory = totalSeconds;
         timeUp = false;
         Runnable run = new Runnable() {
@@ -107,23 +110,24 @@ public class RunActivity extends AppCompatActivity {
                 int minutes = (int) totalSeconds / 60;
                 int seconds = totalSeconds - minutes * 60;
 
-                //If the timer is up and there are no more laps left
-                if(totalSeconds < 0 && numberOfLaps == 0){
-                    timerTextView.setText("00:00");
-                    timeUp = true;
-                }
+//                //If the timer is up and there are no more laps left
+//                if(totalSeconds < 0 && numberOfLaps == 0){
+//                    timerTextView.setText("00:00");
+//                    timeUp = true;
+//                }
                 //If total seconds are up but there are more laps left, reset the timer by adding
                 //resetting totalseconds
-                if(totalSeconds == 0 && numberOfLaps > 0){
-                    timerTextView.setText("00:00");
-                    numberOfLaps--;
-                    if((numberOfLaps % 2)  != 0){
-                        textToSpeech("Pause for" + Integer.toString(totalSecondsMemory) + " seconds");
-                    }
-                    totalSeconds = totalSecondsMemory + 1;
-                }
+
                 //Updates the timer
                 if(timeUp == false){
+                    if(totalSeconds == 0 && numberOfLaps > 0){
+                        timerTextView.setText("00:00");
+                        numberOfLaps--;
+                        totalSeconds = totalSecondsMemory + 1;
+                        if((numberOfLaps % 2) != 0 && numberOfLaps != 1){
+                            textToSpeech("Pause for" + Integer.toString(totalSecondsMemory) + " seconds");
+                        }
+                    }
                     if((numberOfLaps % 2) == 0){
                         if(totalSeconds <= 3){
                             textToSpeech(Integer.toString(totalSeconds));
@@ -131,7 +135,7 @@ public class RunActivity extends AppCompatActivity {
                         runOrPause.setText("RUN!");
                     }
 
-                    if((numberOfLaps % 2) != 0) {
+                    if((numberOfLaps % 2) != 0 && numberOfLaps != 1) {
                         if(totalSeconds == 4){
                             textToSpeech("Starting in");
                         }
@@ -145,15 +149,16 @@ public class RunActivity extends AppCompatActivity {
                     handler.postDelayed(this, 1000);
 
                     if(numberOfLaps == 1){
-                        handler.removeCallbacks(this);
-                        runOrPause.setTextSize(42);
-                        runOrPause.setGravity(Gravity.CENTER);
-                        runOrPause.setText("FINNISHED! \n Congratulations");
-                        lapsLefTextView.setText("0");
+                        timeUp = true;
                     }
                 }
                 //Countdown the totalseconds, makes it easier
                 totalSeconds--;
+                if(timeUp == true){
+                    handler.removeCallbacks(this);
+                    Intent intent = new Intent(RunActivity.this, FinnishedRunActivity.class);
+                    startActivity(intent);
+                }
             }
         };
         handler.post(run);
