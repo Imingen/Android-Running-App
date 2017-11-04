@@ -21,4 +21,5 @@
     <string name="number_of_laps_placeholder">Number of laps</string>
     <string name="date_placeholder">23.09.2017</string>
     <string name="timer_placeholder">00:00</string>
+    <string name="return_home">Return Home</string>
 </resources>
