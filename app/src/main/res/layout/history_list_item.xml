@@ -21,11 +21,16 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/distance"
+        android:id="@+id/numberOfLaps"
         android:layout_below="@id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/lapLength"
+        android:layout_below="@id/numberOfLaps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <!--<TextView-->
         <!--android:id="@+id/year"-->
         <!--android:textColor="@color/year"-->

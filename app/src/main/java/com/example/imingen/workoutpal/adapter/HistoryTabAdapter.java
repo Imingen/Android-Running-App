@@ -12,6 +12,8 @@ import com.example.imingen.workoutpal.models.Run;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,12 +24,13 @@ public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.Vi
     private List<Run> runs;
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView date, distance;
+        TextView date, numberOfLaps, lapLength;
 
         public ViewHolder(View view){
             super(view);
             date = (TextView) view.findViewById(R.id.date);
-            distance = (TextView) view.findViewById(R.id.distance);
+            numberOfLaps = view.findViewById(R.id.numberOfLaps);
+            lapLength = view.findViewById(R.id.lapLength);
         }
     }
 
@@ -46,8 +49,11 @@ public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Run run = runs.get(position);
-        holder.date.setText(run.getDateOfRun().toString());
-        holder.distance.setText(String.valueOf(run.getDistance()));
+        Date date = run.getDateOfRun();
+        String dateString = new SimpleDateFormat("E MMM dd, yyyy - HH:mm").format(date);
+        holder.date.setText(dateString);
+        holder.numberOfLaps.setText("Number of laps: " + String.valueOf(run.getNumberOfLaps()));
+        holder.lapLength.setText("Length per lap: " + String.valueOf(run.getTime()));
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -3,6 +3,10 @@ package com.example.imingen.workoutpal.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,9 +19,7 @@ import java.util.Random;
 public class Run implements Parcelable{
 
 
-    private double timeRunning;
-    private double distance;
-    private double lapLength;
+
     private int numberOfLaps;
 
     private int lengthMinutes;
@@ -25,31 +27,13 @@ public class Run implements Parcelable{
     private Date dateOfRun;
 
 
+    public Run(){}
+
     public Run(Date date, int minutes, int seconds, int lapnum) {
         this.dateOfRun = date;
         this.lengthMinutes = minutes;
         this.lengthSeconds = seconds;
         this.numberOfLaps = lapnum;
-    }
-
-    public static List<Run> runExampleData(){
-        double randomValue;
-        double randomDistance;
-        Date d;
-        List<Run> run = new ArrayList<>();
-
-        for(int i = 0; i < 45; i++){
-            Random r = new Random();
-            d = new Date(Math.abs(System.currentTimeMillis() - r.nextLong()));
-            randomValue = 10 + (90 - 10) * r.nextDouble();
-            randomDistance = 1 + (25 - 10) * r.nextDouble();
-
-            Run current = new Run(d, 2, 15, 3);
-            current.setDistance(randomDistance);
-            current.setTimeRunning(randomValue);
-            run.add(current);
-        }
-        return run;
     }
 
 
@@ -66,13 +50,8 @@ public class Run implements Parcelable{
     }
 
     // region getters and setters
-    public double getLapLength() {
-        return lapLength;
-    }
 
-    public void setLapLength(double lapLength) {
-        this.lapLength = lapLength;
-    }
+
 
     public int getNumberOfLaps() {
         return numberOfLaps;
@@ -80,22 +59,6 @@ public class Run implements Parcelable{
 
     public void setNumberOfLaps(int numberOfLaps) {
         this.numberOfLaps = numberOfLaps;
-    }
-
-    public double getTimeRunning() {
-        return timeRunning;
-    }
-
-    public void setTimeRunning(double timeRunning) {
-        this.timeRunning = timeRunning;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
-
-    public double getDistance() {
-        return distance;
     }
 
     public Date getDateOfRun() {
@@ -120,6 +83,24 @@ public class Run implements Parcelable{
 
     public void setLengthSeconds(int lengthSeconds) {
         this.lengthSeconds = lengthSeconds;
+    }
+
+    @Exclude
+    public String getTime(){
+        int totalSeconds = lengthSeconds + (lengthMinutes * 60);
+        int minutes = (int) totalSeconds / 60;
+        int seconds = totalSeconds - minutes * 60;
+        String minuteString = Integer.toString(minutes);
+        String secondString = Integer.toString(seconds);
+
+        if(seconds <= 9){
+            secondString = "0" + seconds;
+        }
+        if(minutes <= 9){
+            minuteString = "0" + minutes;
+        }
+        String timeString = minuteString + ":" + secondString;
+        return timeString;
     }
 
     // endregion

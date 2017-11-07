@@ -2,6 +2,7 @@ package com.example.imingen.workoutpal.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
 import com.example.imingen.workoutpal.models.Run;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,9 +47,13 @@ public class MainActivity extends AppCompatActivity {
    // private int numberOfLaps;
     private SimpleDateFormat d;
     private EditText nLaps;
+    TextView dateTW;
 
     private NumberPicker minutePicker;
     private NumberPicker secondsPicker;
+    //Firebase Testing
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
         setUpDrawer();
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("Runs");
+
         currentDate = getCurrentDate();
-        TextView dateTW = (TextView) findViewById(R.id.dateEditText);
+        dateTW = (TextView) findViewById(R.id.dateEditText);
         dateTW.setText(currentDate);
 
         nLaps = (EditText) findViewById(R.id.numberOfLapsEditText);
@@ -72,8 +82,22 @@ public class MainActivity extends AppCompatActivity {
         secondsPicker.setMinValue(0);
         secondsPicker.setMaxValue(59);
         secondsPicker.setWrapSelectorWheel(true);
+        updateTimeUI();
     }
 
+
+    public void updateTimeUI(){
+        final Handler handler = new Handler();
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                dateTW.setText(getCurrentDate());
+                handler.postDelayed(this, 1000);
+            }
+        };
+        handler.post(run);
+
+    }
 
     public void startRun(View view){
         if(nLaps.getText().toString().isEmpty()){
@@ -81,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             Run run = createNewRun();
+            databaseReference.push().setValue(run);
             Intent intent = new Intent(this, RunActivity.class);
             intent.putExtra("run", run);
             startActivity(intent);
@@ -110,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String getCurrentDate() {
         long date = System.currentTimeMillis();
-        d = new SimpleDateFormat("E MMM dd, yyyy");
+        d = new SimpleDateFormat("E MMM dd, yyyy \n HH:mm");
         String dateString = d.format(date);
         return dateString;
     }
