@@ -14,6 +14,10 @@ import android.view.ViewGroup;
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.adapter.AchievementTabAdapter;
 import com.example.imingen.workoutpal.models.Achievement;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 public class AchievementsTabFragment extends Fragment {
@@ -23,6 +27,11 @@ public class AchievementsTabFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    //Firebase
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private ChildEventListener childEventListener;
 
     public AchievementsTabFragment() {
         //Empty required constructor

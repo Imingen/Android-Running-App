@@ -3,6 +3,7 @@ package com.example.imingen.workoutpal.UI;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -22,12 +25,16 @@ import android.widget.Toast;
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
 import com.example.imingen.workoutpal.models.Run;
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +44,7 @@ import java.util.List;
  */
 
 public class MainActivity extends AppCompatActivity {
+    public static final int RC_SIGN_IN = 1;
 
     private Toolbar toolbar;
     private NavigationDrawerFragment navigationDrawerFragment;
@@ -51,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
     private NumberPicker minutePicker;
     private NumberPicker secondsPicker;
-    //Firebase Testing
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
+
+    //Firebase
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         setUpDrawer();
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("Runs");
+        firebaseAuth = FirebaseAuth.getInstance();
 
         currentDate = getCurrentDate();
         dateTW = (TextView) findViewById(R.id.dateEditText);
@@ -83,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         secondsPicker.setMaxValue(59);
         secondsPicker.setWrapSelectorWheel(true);
         updateTimeUI();
+
     }
 
 
@@ -105,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             Run run = createNewRun();
-            databaseReference.push().setValue(run);
             Intent intent = new Intent(this, RunActivity.class);
             intent.putExtra("run", run);
             startActivity(intent);
@@ -140,12 +147,52 @@ public class MainActivity extends AppCompatActivity {
         return dateString;
     }
 
+    private void sendToLoginPage(){
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
+    }
+
     @Override
     protected void onStart() {
         navigationDrawerFragment.updateCheckedItem(R.id.nav_main);
         super.onStart();
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if(user == null){
+            sendToLoginPage();
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_signout, menu);
+        return true;
+    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.signoutButton:
+                firebaseAuth.getInstance().signOut();
+                sendToLoginPage();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

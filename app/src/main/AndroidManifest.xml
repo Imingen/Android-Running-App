@@ -22,12 +22,15 @@
             android:name=".UI.HistoryActivity"
             android:label="@string/history_activity_label" />
         <activity android:name=".UI.RunActivity" />
-        <activity android:name=".UI.FinnishedRunActivity"
-            android:parentActivityName="com.example.imingen.workoutpal.UI.MainActivity">
+        <activity
+            android:name=".UI.FinnishedRunActivity"
+            android:parentActivityName=".UI.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.imingen.workoutpal.UI.MainActivity"/>
+                android:value="com.example.imingen.workoutpal.UI.MainActivity" />
         </activity>
+        <activity android:name=".UI.RegisterActivity" />
+        <activity android:name=".UI.LoginActivity"></activity>
     </application>
 
 </manifest>

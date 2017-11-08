@@ -28,6 +28,10 @@ import com.example.imingen.workoutpal.fragments.CountdownFragment;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
 import com.example.imingen.workoutpal.models.Run;
 import com.example.imingen.workoutpal.models.RunTimer;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -57,13 +61,27 @@ public class RunActivity extends AppCompatActivity {
     int totalSeconds;
     boolean timeUp;
 
+    //Firebase
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private FirebaseUser user;
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        Log.i("XD2", firebaseAuth.getUid());
+        databaseReference = firebaseDatabase.getReference().child(firebaseAuth.getUid()).child("Runs");
+
+
+
 
         Bundle data = getIntent().getExtras();
         run = data.getParcelable("run");
+
 
         handler = new Handler();
 
@@ -87,12 +105,13 @@ public class RunActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Text to speech not supported on your device",
                             Toast.LENGTH_LONG).show();
                 }
-                else{
+                else {
                     textToSpeech.setLanguage(Locale.ENGLISH);
                     textToSpeech.setSpeechRate(0.9f);
                 }
             }
         });
+
     }
 
 
@@ -103,7 +122,7 @@ public class RunActivity extends AppCompatActivity {
         //Keep the inital value of totalseconds so that we can reset the timer every lap since both laps and pauses are the same length
         final int totalSecondsMemory = totalSeconds;
         timeUp = false;
-        Runnable run = new Runnable() {
+        final Runnable run = new Runnable() {
             @Override
             public void run() {
                 //Casting to int will round it down
@@ -156,15 +175,18 @@ public class RunActivity extends AppCompatActivity {
                 totalSeconds--;
                 if(timeUp == true){
                     handler.removeCallbacks(this);
-                    Intent intent = new Intent(RunActivity.this, FinnishedRunActivity.class);
-                    startActivity(intent);
+                    finnishedRun();
                 }
             }
         };
         handler.post(run);
     }
 
-
+    public void finnishedRun(){
+        databaseReference.push().setValue(run);
+        Intent intent = new Intent(RunActivity.this, FinnishedRunActivity.class);
+        startActivity(intent);
+    }
 
     public void textToSpeech(String text){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
