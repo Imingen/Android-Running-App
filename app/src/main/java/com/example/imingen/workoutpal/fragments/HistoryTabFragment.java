@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.adapter.HistoryTabAdapter;
+import com.example.imingen.workoutpal.models.Achievement;
 import com.example.imingen.workoutpal.models.Run;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,8 @@ import java.util.List;
  */
 
 public class HistoryTabFragment extends Fragment {
+
+
 
     private List<Run> runList = new ArrayList<>();
 
@@ -40,6 +44,11 @@ public class HistoryTabFragment extends Fragment {
     private DatabaseReference databaseReference;
     private ChildEventListener childEventListener;
     private FirebaseAuth firebaseAuth;
+
+    private DatabaseReference databaseReference2;
+    private ChildEventListener childEventListener2;
+
+    private Achievement ach;
 
     public HistoryTabFragment() {
         //Empty required constructor
@@ -54,7 +63,7 @@ public class HistoryTabFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Runs");
-
+        databaseReference2 = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Achievements");
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -62,7 +71,6 @@ public class HistoryTabFragment extends Fragment {
                 runList.add(0, run);
                 adapter.notifyItemInserted(runList.size()-1);
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
@@ -83,8 +91,47 @@ public class HistoryTabFragment extends Fragment {
 
             }
         };
-
         databaseReference.addChildEventListener(childEventListener);
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(runList.size() == 4){
+                    String name = "Level 0";
+                    String description = "Completed 1 run";
+                    ach = new Achievement(name, description);
+                    databaseReference2.push().setValue(ach);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        childEventListener2 = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        databaseReference2.addChildEventListener(childEventListener2);
 
         View view = inflater.inflate(R.layout.fragment_historytab, container, false);
         recyclerView = view.findViewById(R.id.history_recycler_view);
@@ -103,4 +150,9 @@ public class HistoryTabFragment extends Fragment {
 
 
     }
+
+    public int getRunList() {
+        return runList.size();
+    }
+
 }

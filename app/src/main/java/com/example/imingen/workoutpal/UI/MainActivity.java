@@ -93,11 +93,9 @@ public class MainActivity extends AppCompatActivity {
         secondsPicker.setMaxValue(59);
         secondsPicker.setWrapSelectorWheel(true);
         updateTimeUI();
-        for(Achievement a : Achievement.achievements){
-            Log.i("XD2",  a.getAchievementName());
-        }
 
-        //loadAchievements();
+
+//        loadAchievements();
 
     }
 
@@ -165,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Achievements");
         List<Achievement> ach = Achievement.achievementExampleData();
         for(Achievement a : ach){
-            databaseReference.setValue(a);
+
+            databaseReference.push().setValue(a);
         }
     }
 

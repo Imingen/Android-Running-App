@@ -28,12 +28,12 @@ public class Achievement {
 
     public static List<Achievement> achievementExampleData() {
         List<Achievement> ach = new ArrayList<>();
-        String[] names = {"Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7",
-                        "Level 8","Level 9","Level 10",};
+        String[] names = {"Level 0", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7",
+                        "Level 8","Level 9","Level 10"};
 
-        String[] descriptions = {"Completed 10 runs", "Completed 25 runs", "Completed 50 runs",
+        String[] descriptions = {"Completed 1 run", "Completed 10 runs", "Completed 25 runs", "Completed 50 runs",
                 "Completed 100 runs", "Completed 200 runs", "Completed 300 runs", "Completed 500 runs",
-                "Completed 750 runs","Completed 1000 runs","Completed 2000 runs",};
+                "Completed 750 runs","Completed 1000 runs","Completed 2000 runs"};
 
         int[] logos = {R.drawable.trophy};
 

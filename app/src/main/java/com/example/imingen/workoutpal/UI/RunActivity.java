@@ -1,6 +1,7 @@
 package com.example.imingen.workoutpal.UI;
 
 import android.annotation.TargetApi;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -25,11 +26,16 @@ import android.widget.Toast;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.CountdownFragment;
+import com.example.imingen.workoutpal.fragments.HistoryTabFragment;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
+import com.example.imingen.workoutpal.models.Achievement;
 import com.example.imingen.workoutpal.models.Run;
 import com.example.imingen.workoutpal.models.RunTimer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -66,7 +72,7 @@ public class RunActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseUser user;
     private FirebaseAuth firebaseAuth;
-
+    private DatabaseReference databaseReference2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +80,7 @@ public class RunActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Runs");
-
+        databaseReference2 = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Achievements");
 
         Bundle data = getIntent().getExtras();
         run = data.getParcelable("run");
@@ -181,6 +187,7 @@ public class RunActivity extends AppCompatActivity {
 
     public void finnishedRun(){
         databaseReference.push().setValue(run);
+
         Intent intent = new Intent(RunActivity.this, FinnishedRunActivity.class);
         startActivity(intent);
     }

@@ -48,14 +48,17 @@ public class AchievementsTabFragment extends Fragment {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("Achievements");
+        databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Achievements");
+
 
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
                 Achievement ach = dataSnapshot.getValue(Achievement.class);
                 achlist.add(ach);
                 adapter.notifyItemInserted(achlist.size()-1);
+
             }
 
             @Override
