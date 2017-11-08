@@ -1,6 +1,7 @@
 package com.example.imingen.workoutpal.UI;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
+import com.example.imingen.workoutpal.models.Achievement;
 import com.example.imingen.workoutpal.models.Run;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Firebase
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
         secondsPicker.setMaxValue(59);
         secondsPicker.setWrapSelectorWheel(true);
         updateTimeUI();
+        for(Achievement a : Achievement.achievements){
+            Log.i("XD2",  a.getAchievementName());
+        }
+
+        //loadAchievements();
 
     }
 
@@ -153,13 +161,20 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    public void loadAchievements(){
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Achievements");
+        List<Achievement> ach = Achievement.achievementExampleData();
+        for(Achievement a : ach){
+            databaseReference.setValue(a);
+        }
+    }
+
     @Override
     protected void onStart() {
         navigationDrawerFragment.updateCheckedItem(R.id.nav_main);
         super.onStart();
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
-
         if(user == null){
             sendToLoginPage();
         }

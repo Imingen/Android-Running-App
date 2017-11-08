@@ -2,7 +2,9 @@ package com.example.imingen.workoutpal.UI;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         firebaseAuth.createUserWithEmailAndPassword(email_, password_)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -66,15 +69,21 @@ public class RegisterActivity extends AppCompatActivity {
                             HashMap<String, String> userMap = new HashMap<String, String>();
                             userMap.put("mail", email_);
 
-                            databaseReference.setValue(userMap);
-
-                            Log.d("XD", "createUserWithEmail:success");
-                            Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                            //Pressing the back button will exit the app instead of going back to the login page
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(mainIntent);
-                            finish();
-                        } else {
+                            databaseReference.setValue(userMap).addOnCompleteListener(
+                                    new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Log.d("XD", "createUserWithEmail:success");
+                                            Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                            //Pressing the back button will exit the app instead of going back to the login page
+                                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(mainIntent);
+                                            finish();
+                                        }
+                                    }
+                            );
+                        }
+                        else {
                             // If sign in fails, display a message to the user.
                             Log.w("XD", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",

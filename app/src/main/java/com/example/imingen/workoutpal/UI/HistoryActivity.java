@@ -1,17 +1,21 @@
 package com.example.imingen.workoutpal.UI;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.adapter.HistoryPagerAdapter;
 import com.example.imingen.workoutpal.fragments.AchievementsTabFragment;
 import com.example.imingen.workoutpal.fragments.HistoryTabFragment;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -20,6 +24,8 @@ public class HistoryActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +65,36 @@ public class HistoryActivity extends AppCompatActivity {
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar, R.id.nav_history);
     }
 
+
     @Override
     protected void onStart(){
         navigationDrawerFragment.updateCheckedItem(R.id.nav_history);
         super.onStart();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_signout, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.signoutButton:
+                firebaseAuth.getInstance().signOut();
+                sendToLoginPage();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void sendToLoginPage(){
+        Intent loginIntent = new Intent(HistoryActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
     }
 
 }

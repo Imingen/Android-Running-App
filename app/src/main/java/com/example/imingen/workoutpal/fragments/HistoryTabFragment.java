@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.adapter.HistoryTabAdapter;
 import com.example.imingen.workoutpal.models.Run;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +39,7 @@ public class HistoryTabFragment extends Fragment {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private ChildEventListener childEventListener;
+    private FirebaseAuth firebaseAuth;
 
     public HistoryTabFragment() {
         //Empty required constructor
@@ -50,7 +52,8 @@ public class HistoryTabFragment extends Fragment {
 
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("Runs");
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Runs");
 
         childEventListener = new ChildEventListener() {
             @Override

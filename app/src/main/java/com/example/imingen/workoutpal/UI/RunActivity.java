@@ -73,10 +73,7 @@ public class RunActivity extends AppCompatActivity {
         setContentView(R.layout.activity_run);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        Log.i("XD2", firebaseAuth.getUid());
-        databaseReference = firebaseDatabase.getReference().child(firebaseAuth.getUid()).child("Runs");
-
-
+        databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Runs");
 
 
         Bundle data = getIntent().getExtras();
