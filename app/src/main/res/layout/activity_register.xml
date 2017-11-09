@@ -48,4 +48,17 @@
         android:layout_marginTop="66dp"
         android:onClick="registerOnclick"
         android:text="Register" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registerButton"
+        android:layout_marginTop="45dp"
+        android:elevation="0dp"
+        android:indeterminate="true"
+        android:theme="@style/CircularProgress"
+        android:visibility="gone" />
+
 </RelativeLayout>

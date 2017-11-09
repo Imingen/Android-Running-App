@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,23 +52,45 @@ public class AchievementsTabFragment extends Fragment {
         databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Achievements");
 
 
+        View view = inflater.inflate(R.layout.fragment_achievements, container, false);
+        recyclerView = view.findViewById(R.id.achievement_recycler_view);
+        layoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new AchievementTabAdapter(achlist);
+        recyclerView.setAdapter(adapter);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 Achievement ach = dataSnapshot.getValue(Achievement.class);
                 achlist.add(ach);
-                adapter.notifyItemInserted(achlist.size()-1);
-
+                adapter.notifyItemInserted(achlist.size());
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                Achievement ach = dataSnapshot.getValue(Achievement.class);
+                achlist.add(ach);
+                adapter.notifyItemInserted(achlist.size());
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                List<Achievement> achlist2 = achlist;
+                adapter = new AchievementTabAdapter(achlist2);
+                achlist.clear();
+                Achievement ach = dataSnapshot.getValue(Achievement.class);
+                achlist.add(ach);
+                adapter.notifyItemInserted(achlist.size());
+                adapter = new AchievementTabAdapter(achlist);
 
             }
 
@@ -83,15 +106,7 @@ public class AchievementsTabFragment extends Fragment {
         };
 
         databaseReference.addChildEventListener(childEventListener);
-
-
-        View view = inflater.inflate(R.layout.fragment_achievements, container, false);
-        recyclerView = view.findViewById(R.id.achievement_recycler_view);
-        layoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new AchievementTabAdapter(achlist);
-        recyclerView.setAdapter(adapter);
-
-        return view;
     }
+
+
 }
