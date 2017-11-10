@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -43,7 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String SUCCESSFULL_REG = "Registration successful";
     private static final String PASSWORD_LENGTH_ERROR = "Password must be atleast 6 characters long";
-    private static final String BLANK_FIELDS_ERROR = "Fields can be blank";
+    private static final String BLANK_FIELDS_ERROR = "Fields can't be blank";
+    private static final String BAD_EMAIL_FORMAT_ERROR = "Not a valid email";
 
 
 
@@ -56,6 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.emailField);
         password = (TextInputLayout) findViewById(R.id.passwordField);
+        EditText pw = findViewById(R.id.pw);
+        pw.setTransformationMethod(new PasswordTransformationMethod());
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
     }
@@ -107,15 +111,22 @@ public class RegisterActivity extends AppCompatActivity {
                                         );
                                     }
                                     else{
+                                        //Set the progressbar invisible if registration is unsuccessful
                                         progressBar.setVisibility(View.INVISIBLE);
                                     }
 //********************************************************************************************************************************************************
                                     if(password_.trim().length() < 6 ){
                                         throw new FirebaseAuthInvalidCredentialsException("XD", PASSWORD_LENGTH_ERROR);
                                     }
+                                    if(!email_.trim().matches("[@]*")){
+                                        throw new FirebaseAuthInvalidCredentialsException("XD", BAD_EMAIL_FORMAT_ERROR);
+                                    }
                                 }
                                 catch (FirebaseAuthInvalidCredentialsException e){
                                     if(e.getMessage() == PASSWORD_LENGTH_ERROR){
+                                        makeToast(e.getMessage());
+                                    }
+                                    if(e.getMessage() == BAD_EMAIL_FORMAT_ERROR){
                                         makeToast(e.getMessage());
                                     }
                                 }
@@ -124,6 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         catch (IllegalStateException e){
+            progressBar.setVisibility(View.INVISIBLE);
             makeToast(e.getMessage());
         }
     }
