@@ -58,8 +58,6 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.emailField);
         password = (TextInputLayout) findViewById(R.id.passwordField);
-        EditText pw = findViewById(R.id.pw);
-        pw.setTransformationMethod(new PasswordTransformationMethod());
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
     }
