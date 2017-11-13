@@ -23,17 +23,20 @@
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="loginRegisterOnClick"
-        android:text="Register"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="77dp" />
+        android:layout_marginBottom="77dp"
+        android:background="@color/colorAccent"
+        android:onClick="loginRegisterOnClick"
+        android:text="Register"
+        android:textColor="@color/cardview_light_background" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Need an account?"
+        android:layout_marginBottom="10dp"
         android:layout_above="@+id/registerButton"
         android:layout_centerHorizontal="true" />
 
@@ -80,11 +83,13 @@
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/registerButton"
+        android:layout_alignStart="@+id/registerButton"
+        android:layout_below="@+id/passwordField"
         android:layout_marginTop="57dp"
+        android:background="@color/colorAccent"
         android:onClick="loginOnClick"
         android:text="Log in"
-        android:layout_below="@+id/passwordField"
-        android:layout_alignLeft="@+id/registerButton"
-        android:layout_alignStart="@+id/registerButton" />
+        android:textColor="@color/cardview_light_background" />
 
 </RelativeLayout>

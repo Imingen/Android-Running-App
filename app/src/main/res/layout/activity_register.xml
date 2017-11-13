@@ -48,8 +48,10 @@
         android:layout_below="@+id/passwordField"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp"
+        android:background="@color/colorAccent"
         android:onClick="registerOnclick"
-        android:text="Register" />
+        android:text="Register"
+        android:textColor="@color/cardview_light_background" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

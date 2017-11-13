@@ -116,17 +116,13 @@ public class RegisterActivity extends AppCompatActivity {
                                     if(password_.trim().length() < 6 ){
                                         throw new FirebaseAuthInvalidCredentialsException("XD", PASSWORD_LENGTH_ERROR);
                                     }
-                                    if(!email_.trim().matches("[@]*")){
-                                        throw new FirebaseAuthInvalidCredentialsException("XD", BAD_EMAIL_FORMAT_ERROR);
-                                    }
+
                                 }
                                 catch (FirebaseAuthInvalidCredentialsException e){
                                     if(e.getMessage() == PASSWORD_LENGTH_ERROR){
                                         makeToast(e.getMessage());
                                     }
-                                    if(e.getMessage() == BAD_EMAIL_FORMAT_ERROR){
-                                        makeToast(e.getMessage());
-                                    }
+
                                 }
                             }
                         });

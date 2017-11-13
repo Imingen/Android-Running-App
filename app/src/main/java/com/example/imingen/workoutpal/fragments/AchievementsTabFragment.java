@@ -51,14 +51,12 @@ public class AchievementsTabFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Achievements");
 
-
         View view = inflater.inflate(R.layout.fragment_achievements, container, false);
         recyclerView = view.findViewById(R.id.achievement_recycler_view);
         layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new AchievementTabAdapter(achlist);
         recyclerView.setAdapter(adapter);
-
         return view;
     }
 
