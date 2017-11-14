@@ -51,11 +51,13 @@ public class AchievementsTabFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Achievements");
 
+
         View view = inflater.inflate(R.layout.fragment_achievements, container, false);
         recyclerView = view.findViewById(R.id.achievement_recycler_view);
         layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new AchievementTabAdapter(achlist);
+
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -75,9 +77,7 @@ public class AchievementsTabFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Achievement ach = dataSnapshot.getValue(Achievement.class);
-                achlist.add(ach);
-                adapter.notifyItemInserted(achlist.size());
+
             }
 
             @Override
@@ -87,8 +87,8 @@ public class AchievementsTabFragment extends Fragment {
                 achlist.clear();
                 Achievement ach = dataSnapshot.getValue(Achievement.class);
                 achlist.add(ach);
-                adapter.notifyItemInserted(achlist.size());
                 adapter = new AchievementTabAdapter(achlist);
+                adapter.notifyItemInserted(achlist.size());
 
             }
 
@@ -104,6 +104,8 @@ public class AchievementsTabFragment extends Fragment {
         };
 
         databaseReference.addChildEventListener(childEventListener);
+
+
     }
 
 

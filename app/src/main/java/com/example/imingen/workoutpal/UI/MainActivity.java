@@ -110,12 +110,14 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         handler.post(run);
-
     }
 
     public void startRun(View view){
         if(nLaps.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), ERROR_NO_NUMBER_OF_LAPS, Toast.LENGTH_LONG).show();
+        }
+        if(secondsPicker.getValue() == 0){
+            Toast.makeText(getApplicationContext(), ERROR_NO_LENGTH_OF_LAPS, Toast.LENGTH_LONG).show();
         }
         else{
             Run run = createNewRun();

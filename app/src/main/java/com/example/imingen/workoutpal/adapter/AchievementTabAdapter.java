@@ -20,7 +20,7 @@ public class AchievementTabAdapter extends RecyclerView.Adapter<AchievementTabAd
 
     private List<Achievement> achievements;
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView achTitle;
         ImageView achImg;
 
@@ -51,5 +51,10 @@ public class AchievementTabAdapter extends RecyclerView.Adapter<AchievementTabAd
     @Override
     public int getItemCount() {
         return achievements.size();
+    }
+
+    public void updateAdapter(List<Achievement> newList) {
+        this.achievements = newList;
+        notifyDataSetChanged();
     }
 }

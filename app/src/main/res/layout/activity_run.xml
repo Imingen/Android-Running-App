@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.imingen.workoutpal.UI.RunActivity"
-    android:background="@drawable/outdoor_run"
     tools:layout_editor_absoluteY="25dp"
     tools:layout_editor_absoluteX="0dp">
 
@@ -47,7 +46,7 @@
         android:id="@+id/start_run"
         android:layout_width="174dp"
         android:layout_height="160dp"
-        android:layout_marginBottom="49dp"
+        android:layout_marginBottom="27dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:background="@color/colorAccent"
@@ -63,29 +62,49 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="-7dp"
+        android:layout_marginTop="39dp"
         android:text="Laps left:"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="42dp"
-        app:layout_constraintTop_toBottomOf="@+id/timerTextView"
-        app:layout_constraintHorizontal_bias="0.501" />
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="@+id/start_run"
+        app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
 
     <TextView
         android:id="@+id/lapsLeftTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/start_run"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.134" />
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="39dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        app:layout_constraintRight_toRightOf="@+id/start_run"
+        app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
 
+    <Switch
+        android:id="@+id/mutedSwitch"
+        android:layout_width="56dp"
+        android:layout_height="12dp"
+        android:layout_marginBottom="25dp"
+        android:checked="false"
+        android:textOff="Mute audio"
+        android:textOn="Audio muted"
+        app:layout_constraintBottom_toTopOf="@+id/start_run"
+        tools:checked="false"
+        android:layout_marginRight="7dp"
+        app:layout_constraintRight_toRightOf="@+id/start_run" />
+
+    <TextView
+        android:id="@+id/muteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="31dp"
+        android:layout_marginLeft="12dp"
+        android:text="Mute voice"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/start_run"
+        app:layout_constraintLeft_toLeftOf="@+id/start_run" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -21,6 +21,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +56,7 @@ public class RunActivity extends AppCompatActivity {
     TextView runOrPause;
     TextView lapsLefTextView;
     Button runButton;
+    Switch aSwitch;
     int numberOfLaps;
     TextToSpeech textToSpeech;
     Handler handler;

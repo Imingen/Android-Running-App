@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.Exclude;
 
 public class LoginActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -24,6 +25,10 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout loginEmail, loginPassword;
 
     private FirebaseAuth firebaseAuth;
+
+    private static final String NO_INPUT_ERROR = "Log-in fields can't be blank";
+    private static final String INVALID_EMAIL = "Invalid email/ no such user is database";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,11 @@ public class LoginActivity extends AppCompatActivity {
     public void loginOnClick(View view){
         String email = loginEmail.getEditText().getText().toString();
         String password = loginPassword.getEditText().getText().toString();
+
+        if(email.trim().isEmpty() || password.toString().trim().isEmpty()){
+            Toast.makeText(LoginActivity.this, NO_INPUT_ERROR, Toast.LENGTH_SHORT).show();
+        }
+
 
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
             login(email, password);
@@ -64,11 +74,12 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         else{
                             Log.w("XD", "SigninUserWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, INVALID_EMAIL, Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });
+
     }
 
     public void loginRegisterOnClick(View view){
