@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         updateTimeUI();
 
 
-//        loadAchievements();
+        loadAchievements();
 
     }
 
@@ -164,9 +164,10 @@ public class MainActivity extends AppCompatActivity {
     public void loadAchievements(){
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Achievements");
         List<Achievement> ach = Achievement.achievementExampleData();
-        for(Achievement a : ach){
 
-            databaseReference.push().setValue(a);
+        for(Achievement a : ach){
+            Log.i("XD", a.getAchievementName());
+            databaseReference.child(a.getAchievementName()).setValue(a);
         }
     }
 

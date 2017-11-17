@@ -120,6 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                                 catch (FirebaseAuthInvalidCredentialsException e){
                                     if(e.getMessage() == PASSWORD_LENGTH_ERROR){
+                                        Log.i("JAU", e.getMessage());
                                         makeToast(e.getMessage());
                                     }
 

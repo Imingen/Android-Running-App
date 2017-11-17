@@ -19,15 +19,36 @@ import java.util.List;
 public class AchievementTabAdapter extends RecyclerView.Adapter<AchievementTabAdapter.ViewHolder> {
 
     private List<Achievement> achievements;
+    private OnItemClickListener mlistener;
+
+
+    public interface OnItemClickListener {
+        void onItemClicked(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mlistener = listener;
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView achTitle;
         ImageView achImg;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             achTitle = itemView.findViewById(R.id.achievement_title);
             achImg = itemView.findViewById(R.id.achievement_image);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClicked(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -38,7 +59,7 @@ public class AchievementTabAdapter extends RecyclerView.Adapter<AchievementTabAd
     @Override
     public AchievementTabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.achievement_list_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mlistener);
     }
 
     @Override

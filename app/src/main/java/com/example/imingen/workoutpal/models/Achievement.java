@@ -14,15 +14,18 @@ public class Achievement {
     public static ArrayList<Achievement> achievements = new ArrayList<>();
 
     private String achievementName;
-
     private String achievementDescription;
+
+
+    private int achievementDifficulty;
     private int logoId;
 
     public Achievement(){}
 
-    public Achievement(String achievementName, String achievementDescription) {
+    public Achievement(String achievementName, String achievementDescription, int difficulty) {
         this.achievementName = achievementName;
         this.achievementDescription = achievementDescription;
+        this.achievementDifficulty = difficulty;
         achievements.add(this);
     }
 
@@ -35,10 +38,12 @@ public class Achievement {
                 "Completed 100 runs", "Completed 200 runs", "Completed 300 runs", "Completed 500 runs",
                 "Completed 750 runs","Completed 1000 runs","Completed 2000 runs"};
 
+        int[] difficulties = {1,1,1,2,2,3,3,4,4,5,5};
+
         int[] logos = {R.drawable.trophy};
 
         for(int i = 0; i < names.length; i++){
-            Achievement a = new Achievement(names[i], descriptions[i]);
+            Achievement a = new Achievement(names[i], descriptions[i], difficulties[i]);
             a.setLogoId(logos[0]);
             ach.add(a);
         }
@@ -71,4 +76,13 @@ public class Achievement {
     public void setLogoId(int logoId) {
         this.logoId = logoId;
     }
+
+    public int getAchievementDifficulty() {
+        return achievementDifficulty;
+    }
+
+    public void setAchievementDifficulty(int achievementDifficulty) {
+        this.achievementDifficulty = achievementDifficulty;
+    }
+
 }

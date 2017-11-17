@@ -4,38 +4,43 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".UI.MainActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/home_activity_label">
+            android:label="@string/home_activity_label"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".UI.HistoryActivity"
+            android:label="@string/history_activity_label"
+            android:screenOrientation="portrait" />
+        <activity android:name=".UI.RunActivity" />
+        <activity
+            android:name=".UI.FinnishedRunActivity"
+            android:parentActivityName=".UI.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.imingen.workoutpal.UI.MainActivity" />
+        </activity>
+        <activity
+            android:name=".UI.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".UI.AchievementDetailsActivity" />
+        <activity android:name=".UI.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".UI.HistoryActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/history_activity_label" />
-        <activity android:name=".UI.RunActivity" />
-        <activity
-            android:name=".UI.FinnishedRunActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".UI.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.imingen.workoutpal.UI.MainActivity" />
-        </activity>
-        <activity android:name=".UI.RegisterActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.LoginActivity"
-            android:screenOrientation="portrait" >
         </activity>
     </application>
 
