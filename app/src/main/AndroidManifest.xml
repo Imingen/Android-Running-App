@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.imingen.workoutpal">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -12,9 +14,7 @@
         <activity
             android:name=".UI.MainActivity"
             android:label="@string/home_activity_label"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".UI.HistoryActivity"
             android:label="@string/history_activity_label"
@@ -42,6 +42,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".Service.MyService"
+            android:enabled="true"
+            android:exported="true"
+            android:description="@string/foregroundServiceDescription"></service>
     </application>
 
 </manifest>

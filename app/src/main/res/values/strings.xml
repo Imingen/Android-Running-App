@@ -23,4 +23,5 @@
     <string name="timer_placeholder">00:00</string>
     <string name="return_home">Return Home</string>
     <string name="signout">Sign out</string>
+    <string name="foregroundServiceDescription">This ensures WorkoutPal can run and update while you listen to music or changin apps while running</string>
 </resources>

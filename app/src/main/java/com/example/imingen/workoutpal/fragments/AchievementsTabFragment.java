@@ -54,12 +54,11 @@ public class AchievementsTabFragment extends Fragment {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("Achievements");
+        databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Achievements");
 
         updateUIWithAchievements = new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-
 
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -88,7 +87,7 @@ public class AchievementsTabFragment extends Fragment {
             @Override
             public void onItemClicked(int position) {
                 Intent intent = new Intent(getContext(), AchievementDetailsActivity.class);
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), recyclerView, ViewCompat.getTransitionName(recyclerView));
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), recyclerView.getChildAt(position), ViewCompat.getTransitionName(recyclerView));
                 Bundle bundle = new Bundle();
                 bundle.putString("Title", achlist.get(position).getAchievementName());
                 bundle.putString("Description", achlist.get(position).getAchievementDescription());

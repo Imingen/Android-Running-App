@@ -22,7 +22,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         EasySplashScreen splashScreen = new EasySplashScreen(SplashScreenActivity.this)
                 .withFullScreen()
                 .withTargetActivity(MainActivity.class)
-                .withSplashTimeOut(3000)
+                .withSplashTimeOut(500)
                 .withBackgroundColor(Color.parseColor("#13a48c"))
                 .withLogo(R.drawable.logo)
                 .withBeforeLogoText("WorkoutPal");

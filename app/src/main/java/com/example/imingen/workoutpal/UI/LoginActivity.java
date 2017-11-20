@@ -1,5 +1,6 @@
 package com.example.imingen.workoutpal.UI;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -9,7 +10,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.imingen.workoutpal.R;
@@ -29,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String NO_INPUT_ERROR = "Log-in fields can't be blank";
     private static final String INVALID_EMAIL = "Invalid email/ no such user is database";
 
+    private View view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,16 @@ public class LoginActivity extends AppCompatActivity {
         loginPassword = (TextInputLayout) findViewById(R.id.passwordField);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        view = findViewById(R.id.login_activity);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) LoginActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(LoginActivity.this.getCurrentFocus().getWindowToken(), 0);
+                return true;
+            }
+        });
     }
 
 
@@ -54,7 +69,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
             login(email, password);
+            InputMethodManager imm = (InputMethodManager) LoginActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(LoginActivity.this.getCurrentFocus().getWindowToken(), 0);
         }
+
     }
 
     private void login(String email, String password) {

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.imingen.workoutpal.UI.AchievementDetailsActivity;
 import com.example.imingen.workoutpal.UI.HistoryActivity;
 import com.example.imingen.workoutpal.UI.MainActivity;
 import com.example.imingen.workoutpal.R;
@@ -56,10 +57,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
         switch (item.getItemId()){
             case R.id.nav_main:
                 intent = new Intent(getActivity(), MainActivity.class);
+
                 startActivity(intent);
                 break;
             case R.id.nav_history:
                 intent = new Intent(getActivity(), HistoryActivity.class);
+
                 startActivity(intent);
                 break;
             //case R.id.nav_settings:

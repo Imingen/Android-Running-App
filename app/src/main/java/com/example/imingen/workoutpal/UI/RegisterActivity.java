@@ -1,5 +1,6 @@
 package com.example.imingen.workoutpal.UI;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -12,8 +13,10 @@ import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -47,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String BLANK_FIELDS_ERROR = "Fields can't be blank";
     private static final String BAD_EMAIL_FORMAT_ERROR = "Not a valid email";
 
-
+    private View view;
 
 
     @Override
@@ -59,6 +62,17 @@ public class RegisterActivity extends AppCompatActivity {
         email = findViewById(R.id.emailField);
         password = (TextInputLayout) findViewById(R.id.passwordField);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        view = findViewById(R.id.register_activity);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) RegisterActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(RegisterActivity.this.getCurrentFocus().getWindowToken(), 0);
+                return true;
+            }
+        });
+
 
     }
 

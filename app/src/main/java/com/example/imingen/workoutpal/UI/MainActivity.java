@@ -1,5 +1,6 @@
 package com.example.imingen.workoutpal.UI;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +18,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -61,10 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
     private NumberPicker minutePicker;
     private NumberPicker secondsPicker;
+    private Button startRunButton;
 
     //Firebase
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
+
+    View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +101,37 @@ public class MainActivity extends AppCompatActivity {
         secondsPicker.setWrapSelectorWheel(true);
         updateTimeUI();
 
+        //I have used onclick from XML file trough out the app but running it on my testing device
+        // (a samsung note 2) crashed the app, unless I added an setOnclicklistener like under
+        startRunButton = findViewById(R.id.startRunButton);
+        startRunButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(nLaps.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), ERROR_NO_NUMBER_OF_LAPS, Toast.LENGTH_LONG).show();
+                }
+               else if(secondsPicker.getValue() == 0){
+                    Toast.makeText(getApplicationContext(), ERROR_NO_LENGTH_OF_LAPS, Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Run run = createNewRun();
+                    Intent intent = new Intent(MainActivity.this, RunActivity.class);
+                    intent.putExtra("run", run);
+                    startActivity(intent);
+                }
+            }
+        });
 
-        loadAchievements();
+        view = findViewById(R.id.main_activity);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(), 0);
+                return true;
+            }
+        });
+//        loadAchievements();
 
     }
 
@@ -113,18 +149,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startRun(View view){
-        if(nLaps.getText().toString().isEmpty()){
-            Toast.makeText(getApplicationContext(), ERROR_NO_NUMBER_OF_LAPS, Toast.LENGTH_LONG).show();
-        }
-        if(secondsPicker.getValue() == 0){
-            Toast.makeText(getApplicationContext(), ERROR_NO_LENGTH_OF_LAPS, Toast.LENGTH_LONG).show();
-        }
-        else{
-            Run run = createNewRun();
-            Intent intent = new Intent(this, RunActivity.class);
-            intent.putExtra("run", run);
-            startActivity(intent);
-        }
+
     }
 
     private Run createNewRun() {

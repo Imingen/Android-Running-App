@@ -6,6 +6,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="com.example.imingen.workoutpal.UI.MainActivity">
 
     <android.support.design.widget.CoordinatorLayout
@@ -27,10 +28,13 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTintMode="src_over">
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:id="@+id/main_activity">
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/appCompatButton"
+                android:id="@+id/startRunButton"
                 style="@style/Base.TextAppearance.AppCompat.Inverse"
                 android:layout_width="156dp"
                 android:layout_height="145dp"
@@ -104,7 +108,7 @@
                 android:text="@string/date_placeholder"
                 android:textAlignment="center"
                 android:textSize="25sp"
-                app:layout_constraintBottom_toTopOf="@+id/appCompatButton"
+                app:layout_constraintBottom_toTopOf="@+id/startRunButton"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
 
