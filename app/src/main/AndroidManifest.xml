@@ -14,6 +14,7 @@
         <activity
             android:name=".UI.MainActivity"
             android:label="@string/home_activity_label"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".UI.HistoryActivity"

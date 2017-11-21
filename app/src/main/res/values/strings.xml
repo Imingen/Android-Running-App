@@ -24,4 +24,7 @@
     <string name="return_home">Return Home</string>
     <string name="signout">Sign out</string>
     <string name="foregroundServiceDescription">This ensures WorkoutPal can run and update while you listen to music or changin apps while running</string>
+    <string name="button_register_text">Register</string>
+    <string name="TextView_email_placeholder">Email</string>
+    <string name="TextView_password_text">Password</string>
 </resources>

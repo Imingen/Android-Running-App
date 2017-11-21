@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.imingen.workoutpal.R;
@@ -33,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String INVALID_EMAIL = "Invalid email/ no such user is database";
 
     private View view;
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         loginPassword = (TextInputLayout) findViewById(R.id.passwordField);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         view = findViewById(R.id.login_activity);
         view.setOnTouchListener(new View.OnTouchListener() {
@@ -61,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
     public void loginOnClick(View view){
         String email = loginEmail.getEditText().getText().toString();
         String password = loginPassword.getEditText().getText().toString();
+        progressBar.setVisibility(View.VISIBLE);
+
 
         if(email.trim().isEmpty() || password.toString().trim().isEmpty()){
             Toast.makeText(LoginActivity.this, NO_INPUT_ERROR, Toast.LENGTH_SHORT).show();
@@ -97,7 +104,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
     public void loginRegisterOnClick(View view){

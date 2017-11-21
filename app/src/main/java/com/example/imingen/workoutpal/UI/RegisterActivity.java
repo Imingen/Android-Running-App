@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
 
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
 
     private Toast toast;
 

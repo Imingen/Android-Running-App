@@ -96,4 +96,16 @@
         android:text="Log in"
         android:textColor="@color/cardview_light_background" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginButton"
+        android:layout_marginTop="15dp"
+        android:elevation="0dp"
+        android:indeterminate="true"
+        android:theme="@style/CircularProgress"
+        android:visibility="gone" />
+
 </RelativeLayout>
