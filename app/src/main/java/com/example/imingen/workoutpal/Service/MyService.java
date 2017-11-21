@@ -56,7 +56,6 @@ public class MyService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        notificationHelper.getNotificationManager().cancel(1);
         return super.onUnbind(intent);
     }
 
@@ -67,7 +66,6 @@ public class MyService extends Service {
     }
 
     public int countDownSeconds(){
-        updateNotification("Timer " + Integer.toString(totalSeconds), secondsMem, totalSeconds);
         if (numLaps > 0){
             if(totalSeconds == 0){
                 totalSeconds = secondsMem;
@@ -78,6 +76,7 @@ public class MyService extends Service {
             }
         }
         Log.i("XD5", Integer.toString(totalSeconds));
+        updateNotification(NOTIFICATION_TITLE, "Timer " + Integer.toString(totalSeconds), secondsMem, totalSeconds);
         return  totalSeconds;
     }
 
@@ -88,7 +87,8 @@ public class MyService extends Service {
         notificationManager.notify(1, builder.build());
     }
 
-    public void updateNotification(String message, int max, int current){
+    public void updateNotification(String title, String message, int max, int current){
+        builder.setContentTitle(title);
         builder.setContentText(message);
         builder.setProgress(secondsMem, totalSeconds, false );
         notificationManager.notify(1, builder.build());

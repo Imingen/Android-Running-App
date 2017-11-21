@@ -16,6 +16,7 @@ import com.example.imingen.workoutpal.UI.RunActivity;
 
 /**
  * Created by Mingen on 21-Nov-17.
+ *
  */
 
 public class NotificationHelper extends ContextWrapper {

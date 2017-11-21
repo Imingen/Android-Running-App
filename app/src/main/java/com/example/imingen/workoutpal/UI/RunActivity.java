@@ -327,6 +327,7 @@ public class RunActivity extends AppCompatActivity{
 
     public void finnishedRun(){
         databaseReference.push().setValue(run);
+
         Intent intent = new Intent(RunActivity.this, FinnishedRunActivity.class);
         startActivity(intent);
     }

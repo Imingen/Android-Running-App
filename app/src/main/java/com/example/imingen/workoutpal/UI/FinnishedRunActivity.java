@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.fragments.FinishedRunFragment;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
+import com.example.imingen.workoutpal.helpers.NotificationHelper;
 import com.example.imingen.workoutpal.models.Achievement;
 import com.example.imingen.workoutpal.models.Run;
 import com.google.firebase.auth.FirebaseAuth;
@@ -123,6 +124,8 @@ public class FinnishedRunActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+        notificationHelper.getNotificationManager().cancel(1);
         textToSpeech.stop();
     }
 
