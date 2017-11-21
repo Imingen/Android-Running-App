@@ -31,13 +31,13 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = findViewById(R.id.viewPager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         setUpTabIcons();
@@ -61,7 +61,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void setUpDrawer(){
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar, R.id.nav_history);
     }
 
@@ -83,7 +83,7 @@ public class HistoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.signoutButton:
-                firebaseAuth.getInstance().signOut();
+                FirebaseAuth.getInstance().signOut();
                 sendToLoginPage();
                 return true;
             default:

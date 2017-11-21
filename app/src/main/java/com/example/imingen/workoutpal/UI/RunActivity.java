@@ -3,6 +3,7 @@ package com.example.imingen.workoutpal.UI;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +44,7 @@ import com.example.imingen.workoutpal.Service.MyService;
 import com.example.imingen.workoutpal.fragments.CountdownFragment;
 import com.example.imingen.workoutpal.fragments.HistoryTabFragment;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
+import com.example.imingen.workoutpal.helpers.NotificationHelper;
 import com.example.imingen.workoutpal.models.Achievement;
 import com.example.imingen.workoutpal.models.Run;
 import com.google.firebase.auth.FirebaseAuth;
@@ -94,8 +97,6 @@ public class RunActivity extends AppCompatActivity{
     private boolean isBound = false;
     private MyService myService;
 
-    View view;
-
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -125,10 +126,10 @@ public class RunActivity extends AppCompatActivity{
 
         handler = new Handler();
 
-        timerTextView = (TextView) findViewById(R.id.timerTextView);
-        runOrPause = (TextView) findViewById(R.id.runOrPauseTextView);
-        runButton = (Button) findViewById(R.id.start_run);
-        lapsLefTextView = (TextView) findViewById(R.id.lapsLeftTextView);
+        timerTextView = findViewById(R.id.timerTextView);
+        runOrPause = findViewById(R.id.runOrPauseTextView);
+        runButton = findViewById(R.id.start_run);
+        lapsLefTextView = findViewById(R.id.lapsLeftTextView);
 
         minutes = run.getLengthMinutes();
         seconds = run.getLengthSeconds();
@@ -254,7 +255,7 @@ public class RunActivity extends AppCompatActivity{
             @Override
             public void run() {
                 int total = myService.countDownSeconds();
-                int minutes = (int) total / 60;
+                int minutes = total / 60;
                 int seconds = total - minutes * 60;
                 Log.i("XD6", Integer.toString(total));
 

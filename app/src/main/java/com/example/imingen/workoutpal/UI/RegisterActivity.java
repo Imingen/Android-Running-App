@@ -60,8 +60,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.emailField);
-        password = (TextInputLayout) findViewById(R.id.passwordField);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        password = findViewById(R.id.passwordField);
+        progressBar = findViewById(R.id.progress_bar);
 
         view = findViewById(R.id.register_activity);
         view.setOnTouchListener(new View.OnTouchListener() {
@@ -152,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void makeToast(String message){
         Toast toast = Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG);
-        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+        TextView v = toast.getView().findViewById(android.R.id.message);
         if( v != null) v.setGravity(Gravity.CENTER);
         toast.show();
     }

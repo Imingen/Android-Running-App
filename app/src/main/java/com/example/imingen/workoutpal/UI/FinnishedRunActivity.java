@@ -49,7 +49,7 @@ public class FinnishedRunActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finnished_run);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         setUpDrawer();
@@ -143,7 +143,7 @@ public class FinnishedRunActivity extends AppCompatActivity {
 
     private void setUpDrawer() {
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar, R.id.nav_main);
     }
 

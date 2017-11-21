@@ -88,7 +88,7 @@ public class Run implements Parcelable{
     @Exclude
     public String getTime(){
         int totalSeconds = lengthSeconds + (lengthMinutes * 60);
-        int minutes = (int) totalSeconds / 60;
+        int minutes = totalSeconds / 60;
         int seconds = totalSeconds - minutes * 60;
         String minuteString = Integer.toString(minutes);
         String secondString = Integer.toString(seconds);

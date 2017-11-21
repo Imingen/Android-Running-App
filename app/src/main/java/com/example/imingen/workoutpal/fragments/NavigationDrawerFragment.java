@@ -29,7 +29,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
-        navigationView = (NavigationView) view.findViewById(R.id.navigation_view);
+        navigationView = view.findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         return view;

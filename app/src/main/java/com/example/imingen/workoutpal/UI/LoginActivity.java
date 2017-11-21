@@ -41,11 +41,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        loginEmail = (TextInputLayout) findViewById(R.id.emailField);
-        loginPassword = (TextInputLayout) findViewById(R.id.passwordField);
+        loginEmail = findViewById(R.id.emailField);
+        loginPassword = findViewById(R.id.passwordField);
 
         firebaseAuth = FirebaseAuth.getInstance();
 

@@ -28,7 +28,7 @@ public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.Vi
 
         public ViewHolder(View view){
             super(view);
-            date = (TextView) view.findViewById(R.id.date);
+            date = view.findViewById(R.id.date);
             numberOfLaps = view.findViewById(R.id.numberOfLaps);
             lapLength = view.findViewById(R.id.lapLength);
         }

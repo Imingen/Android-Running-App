@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         setUpDrawer();
@@ -85,17 +85,17 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         currentDate = getCurrentDate();
-        dateTW = (TextView) findViewById(R.id.dateEditText);
+        dateTW = findViewById(R.id.dateEditText);
         dateTW.setText(currentDate);
 
-        nLaps = (EditText) findViewById(R.id.numberOfLapsEditText);
+        nLaps = findViewById(R.id.numberOfLapsEditText);
 
-        minutePicker = (NumberPicker) findViewById(R.id.lapLengthMinutes);
+        minutePicker = findViewById(R.id.lapLengthMinutes);
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(10);
         minutePicker.setWrapSelectorWheel(true);
 
-        secondsPicker = (NumberPicker) findViewById(R.id.lapLengthSeconds);
+        secondsPicker = findViewById(R.id.lapLengthSeconds);
         secondsPicker.setMinValue(0);
         secondsPicker.setMaxValue(59);
         secondsPicker.setWrapSelectorWheel(true);
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpDrawer() {
         navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar, R.id.nav_main);
     }
 
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.signoutButton:
-                firebaseAuth.getInstance().signOut();
+                FirebaseAuth.getInstance().signOut();
                 sendToLoginPage();
                 return true;
             default:
