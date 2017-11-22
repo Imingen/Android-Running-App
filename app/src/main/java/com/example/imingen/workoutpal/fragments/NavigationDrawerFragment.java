@@ -14,10 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.imingen.workoutpal.UI.AchievementDetailsActivity;
 import com.example.imingen.workoutpal.UI.HistoryActivity;
 import com.example.imingen.workoutpal.UI.MainActivity;
 import com.example.imingen.workoutpal.R;
+import com.example.imingen.workoutpal.UI.SettingsActivity;
 
 public class NavigationDrawerFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -65,10 +65,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
 
                 startActivity(intent);
                 break;
-            //case R.id.nav_settings:
-              //  intent = new Intent(getActivity(), SettingsActivity.class);
-               // startActivity(intent);
-                //break;
+            case R.id.nav_settings:
+                intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

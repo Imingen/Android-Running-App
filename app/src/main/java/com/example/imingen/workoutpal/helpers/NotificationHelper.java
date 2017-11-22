@@ -1,6 +1,7 @@
 package com.example.imingen.workoutpal.helpers;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -33,6 +34,10 @@ public class NotificationHelper extends ContextWrapper {
         }
     }
 
+    /**
+     * Builds a notification channel for devices running Oreo
+     * This is required for devices that run Oreo or higher
+     */
     @TargetApi(Build.VERSION_CODES.O)
     public void createChannel(){
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
@@ -44,7 +49,10 @@ public class NotificationHelper extends ContextWrapper {
         getNotificationManager().createNotificationChannel(channel);
     }
 
-
+    /**
+     *
+     * @return Returns a NotificationManager
+     */
     public NotificationManager getNotificationManager(){
         if(notificationManager == null){
             notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -52,13 +60,21 @@ public class NotificationHelper extends ContextWrapper {
         return notificationManager;
     }
 
-    public NotificationCompat.Builder getChannelNotification(String title, String message){
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, new Intent(this, RunActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+    /**
+     *
+     * @param title The title of the notification, should not be the app name
+     * @param message The message of the notification
+     * @param activity What activity to open if notification is pressed
+     * @return Returns a builder object that is used to construct a notification by using the .build() method
+     */
+    public NotificationCompat.Builder getChannelNotification(String title, String message, Class activity){
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, new Intent(this, activity), PendingIntent.FLAG_UPDATE_CURRENT);
         return  new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSmallIcon(R.drawable.ic_runner)
                 .setContentIntent(pendingIntent);
     }
+
 
 }

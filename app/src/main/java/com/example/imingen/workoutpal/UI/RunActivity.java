@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,6 +18,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.annotation.NonNull;
@@ -44,6 +46,7 @@ import com.example.imingen.workoutpal.Service.MyService;
 import com.example.imingen.workoutpal.fragments.CountdownFragment;
 import com.example.imingen.workoutpal.fragments.HistoryTabFragment;
 import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
+import com.example.imingen.workoutpal.fragments.SettingsFragment;
 import com.example.imingen.workoutpal.helpers.NotificationHelper;
 import com.example.imingen.workoutpal.models.Achievement;
 import com.example.imingen.workoutpal.models.Run;
@@ -96,7 +99,9 @@ public class RunActivity extends AppCompatActivity{
 
     private boolean isBound = false;
     private MyService myService;
+    private Locale locale;
 
+    private String language;
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -112,6 +117,7 @@ public class RunActivity extends AppCompatActivity{
     };
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +145,11 @@ public class RunActivity extends AppCompatActivity{
         updateTimer(minutes, seconds);
         lapsLefTextView.setText(Integer.toString(numberOfLaps / 2));
 
+        SharedPreferences sharedPreferences = getSharedPreferences("languages", Activity.MODE_PRIVATE);
+        Log.i("ASDSD", language);
+        locale = new Locale(language);
+
+
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -147,7 +158,12 @@ public class RunActivity extends AppCompatActivity{
                             Toast.LENGTH_LONG).show();
                 }
                 else {
-                    textToSpeech.setLanguage(Locale.ENGLISH);
+                    if(language == "CHINESE"){
+                        textToSpeech.setLanguage(Locale.CHINESE);
+                    }
+                    else{
+                        textToSpeech.setLanguage(Locale.ENGLISH);
+                    }
                     textToSpeech.setSpeechRate(0.9f);
                 }
             }
@@ -323,10 +339,20 @@ public class RunActivity extends AppCompatActivity{
         handler.removeCallbacks(runnable);
         unbindService(connection);
         this.stopService(new Intent(this, MyService.class));
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 
     public void finnishedRun(){
         databaseReference.push().setValue(run);
+        //Cancels the current notification
+        NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+        notificationHelper.getNotificationManager().cancel(1);
 
         Intent intent = new Intent(RunActivity.this, FinnishedRunActivity.class);
         startActivity(intent);

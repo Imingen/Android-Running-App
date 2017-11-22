@@ -14,14 +14,14 @@
         <activity
             android:name=".UI.MainActivity"
             android:label="@string/home_activity_label"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UI.HistoryActivity"
             android:label="@string/history_activity_label"
             android:screenOrientation="portrait" />
-        <activity android:name=".UI.RunActivity"
-            android:launchMode="singleTop"
-            />
+        <activity
+            android:name=".UI.RunActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".UI.FinnishedRunActivity"
             android:parentActivityName=".UI.MainActivity"
@@ -47,9 +47,11 @@
 
         <service
             android:name=".Service.MyService"
+            android:description="@string/foregroundServiceDescription"
             android:enabled="true"
-            android:exported="true"
-            android:description="@string/foregroundServiceDescription"></service>
+            android:exported="true" />
+
+        <activity android:name=".UI.SettingsActivity"></activity>
     </application>
 
 </manifest>

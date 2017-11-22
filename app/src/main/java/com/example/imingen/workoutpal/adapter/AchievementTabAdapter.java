@@ -66,7 +66,7 @@ public class AchievementTabAdapter extends RecyclerView.Adapter<AchievementTabAd
     public void onBindViewHolder(AchievementTabAdapter.ViewHolder holder, int position) {
         Achievement ach = achievements.get(position);
         holder.achTitle.setText(ach.getAchievementName());
-        holder.achImg.setImageResource(ach.getLogoId());
+        holder.achImg.setImageResource(R.drawable.trophy);
     }
 
     @Override

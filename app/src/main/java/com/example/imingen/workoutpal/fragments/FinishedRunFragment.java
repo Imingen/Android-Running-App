@@ -25,6 +25,8 @@ import java.util.Locale;
 public class FinishedRunFragment extends Fragment {
 
     TextView congratz;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,12 +1,14 @@
 package com.example.imingen.workoutpal.UI;
 
 import android.annotation.TargetApi;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +47,10 @@ public class FinnishedRunActivity extends AppCompatActivity {
     private DatabaseReference userRef;
     private DatabaseReference userAchRef;
 
+    private NotificationHelper notificationHelper;
+    private NotificationCompat.Builder builder;
+    private NotificationManager notificationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +60,8 @@ public class FinnishedRunActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setUpDrawer();
-
-
+        notificationHelper = new NotificationHelper(getApplicationContext());
+        startNotification("Workout complete!", "Good job m9-1");
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -124,18 +130,21 @@ public class FinnishedRunActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
-        notificationHelper.getNotificationManager().cancel(1);
         textToSpeech.stop();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        notificationHelper.getNotificationManager().cancel(2);
+    }
 
     //TODO this method is kinda meh right?
     @Override
     public void onBackPressed() {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void returnHome(View view){
@@ -171,4 +180,11 @@ public class FinnishedRunActivity extends AppCompatActivity {
         String utteranceId=this.hashCode() + "";
         textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
+
+    public void startNotification(String title, String message){
+        builder = notificationHelper.getChannelNotification(title, message, FinnishedRunActivity.class);
+        notificationManager = notificationHelper.getNotificationManager();
+        notificationManager.notify(2, builder.build());
+    }
+
 }
