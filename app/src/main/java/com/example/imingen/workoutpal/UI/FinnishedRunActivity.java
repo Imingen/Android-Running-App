@@ -3,7 +3,9 @@ package com.example.imingen.workoutpal.UI;
 import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -51,6 +53,7 @@ public class FinnishedRunActivity extends AppCompatActivity {
     private NotificationCompat.Builder builder;
     private NotificationManager notificationManager;
 
+    private Locale locale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +62,20 @@ public class FinnishedRunActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         setUpDrawer();
         notificationHelper = new NotificationHelper(getApplicationContext());
         startNotification("Workout complete!", "Good job m9-1");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String [] voice = prefs.getString("languages", "").split("_");
+
+        String language = voice[0];
+        String region = voice[1];
+        locale = new Locale(language, region);
+        locale.setDefault(locale);
+
+
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -70,9 +84,25 @@ public class FinnishedRunActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
                 else{
-                    textToSpeech.setLanguage(Locale.ENGLISH);
+                    textToSpeech.setLanguage(locale);
                     textToSpeech.setSpeechRate(0.9f);
-                    textToSpeech("Congratulations, you finnished todays workout!");
+                    Log.e("JAU2", locale.getLanguage());
+
+                    if(locale.getLanguage().equals("fr")){
+                        textToSpeech("Félicitations, vous avez terminé l'entraînement d'aujourd'hui!");
+                    }
+                    if(locale.getLanguage().equals("de")){
+                        textToSpeech("Herzlichen Glückwunsch, Sie haben das Training heute beendet!!");
+                    }
+                    if(locale.getLanguage().equals("zh")){
+                        textToSpeech("Gōngxǐ, nǐ jīntiān wánchéngle duànliàn");
+                    }
+                    if(locale.getLanguage().equals("no")){
+                        textToSpeech("Gratulerer, du gjennomførte dagens økt");
+                    }
+                   if(locale.getLanguage().equals("en")){
+                     textToSpeech("Congratulations, you finished today's workout!");
+                    }
                 }
             }
         });
@@ -166,6 +196,7 @@ public class FinnishedRunActivity extends AppCompatActivity {
             ttsUnder20(text);
         }
     }
+
 
     //Tatt fra https://stackoverflow.com/questions/27968146/texttospeech-with-api-21
     @SuppressWarnings("deprecation")

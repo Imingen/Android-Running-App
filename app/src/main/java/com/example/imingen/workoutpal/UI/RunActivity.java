@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class RunActivity extends AppCompatActivity{
@@ -101,7 +102,8 @@ public class RunActivity extends AppCompatActivity{
     private MyService myService;
     private Locale locale;
 
-    private String language;
+    String language;
+
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -145,9 +147,18 @@ public class RunActivity extends AppCompatActivity{
         updateTimer(minutes, seconds);
         lapsLefTextView.setText(Integer.toString(numberOfLaps / 2));
 
-        SharedPreferences sharedPreferences = getSharedPreferences("languages", Activity.MODE_PRIVATE);
-        Log.i("ASDSD", language);
-        locale = new Locale(language);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String [] voice = prefs.getString("languages", "").split("_");
+        Log.e("JAU", Integer.toString(voice.length));
+        for(String s : voice){
+            Log.e("JAU", s);
+        }
+        String language = voice[0];
+        String region = voice[1];
+        locale = new Locale(language, region);
+        locale.setDefault(locale);
+//        Log.e("JAU", locale.getLanguage());
+//        Log.e("JAU", locale.getCountry());
 
 
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -158,12 +169,9 @@ public class RunActivity extends AppCompatActivity{
                             Toast.LENGTH_LONG).show();
                 }
                 else {
-                    if(language == "CHINESE"){
-                        textToSpeech.setLanguage(Locale.CHINESE);
-                    }
-                    else{
-                        textToSpeech.setLanguage(Locale.ENGLISH);
-                    }
+
+
+                    textToSpeech.setLanguage(locale);
                     textToSpeech.setSpeechRate(0.9f);
                 }
             }

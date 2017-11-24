@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WorkoutPal</string>
+    <string name="congrats"></string>
+    <string name="date_placeholder">Félicitations, vous avez terminé l\'entraînement d\'aujourd\'hui!</string>
+</resources>

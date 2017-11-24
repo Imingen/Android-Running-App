@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
    <ListPreference
        android:key="languages"
-       android:title="Voice language"
-       android:dialogTitle="Choose a language for voice"
-       android:entries="@array/voices"
+       android:title="@string/voice_setting"
+       android:dialogTitle="@string/voice_setting_picker"
+       android:entries="@array/voices_tag"
        android:entryValues="@array/voices"
+       android:icon="@drawable/ic_language"
        android:defaultValue="@string/ENGLISH" />
 
 </PreferenceScreen>

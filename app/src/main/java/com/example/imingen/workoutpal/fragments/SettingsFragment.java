@@ -21,6 +21,8 @@ public class SettingsFragment extends PreferenceFragment {
 
     private ListPreference myPref;
 
+
+
     public SettingsFragment() {
         // Required empty public constructor
     }
@@ -29,11 +31,8 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         addPreferencesFromResource(R.xml.preferences);
-
-
-
-
         return inflater.inflate(R.layout.fragment_settings, container, false);
+
     }
 
 

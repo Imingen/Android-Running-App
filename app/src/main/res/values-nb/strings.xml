@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WorkoutPal</string>
+    <string name="TextView_password_text">Passord</string>
+    <string name="achievements_tab_text">Prestasjoner</string>
+    <string name="button_register_text">Registrer</string>
+    <string name="history">Historie</string>
+    <string name="history_activity_label">WorkoutPal HISTORIE</string>
+    <string name="history_tab_text">Historie</string>
+    <string name="home_activity_label">WorkoutPal HJEM</string>
+    <string name="lap_length_placeholder">Lengde per runde</string>
+    <string name="number_of_laps_placeholder">Antall runder</string>
+    <string name="run_button">LØP</string>
+    <string name="settings_header">Instillinger</string>
+    <string name="signout">Logg ut</string>
+    <string name="title_activity_settings">Instillinger</string>
+    <string name="mainPage">Hjem</string>
+    <string name="difficulty">Vansklighetsgrad</string>
+    <string name="numlaps_historytab">Antall runder:</string>
+    <string name="lengthlap_historytab">"Lengde per runde: "</string>
+    <string name="voice_setting">Språk for stemme</string>
+    <string name="voice_setting_picker">Velg et språk for stemmen</string>
+
+    <string-array name="voices">
+        <item>en_US</item>
+        <item>zh_CN</item>
+        <item>fr_FR</item>
+        <item>de_DE</item>
+        <item>no_NO</item>
+    </string-array>
+
+    <string-array name="voices_tag">
+        <item>Engelsk</item>
+        <item>Kinesisk</item>
+        <item>Fransk</item>
+        <item>Tysk</item>
+        <item>Norsk</item>
+    </string-array>
+
+</resources>

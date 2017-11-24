@@ -22,12 +22,17 @@ import java.util.List;
 
 public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.ViewHolder>{
     private List<Run> runs;
+    String numlaps;
+    String lengthlaps;
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView date, numberOfLaps, lapLength;
 
         public ViewHolder(View view){
             super(view);
+            numlaps = view.getResources().getString(R.string.numlaps_historytab);
+            lengthlaps = view.getResources().getString(R.string.lengthlap_historytab);
+
             date = view.findViewById(R.id.date);
             numberOfLaps = view.findViewById(R.id.numberOfLaps);
             lapLength = view.findViewById(R.id.lapLength);
@@ -52,8 +57,8 @@ public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.Vi
         Date date = run.getDateOfRun();
         String dateString = new SimpleDateFormat("E MMM dd, yyyy - HH:mm").format(date);
         holder.date.setText(dateString);
-        holder.numberOfLaps.setText("Number of laps: " + String.valueOf(run.getNumberOfLaps()));
-        holder.lapLength.setText("Length per lap: " + String.valueOf(run.getTime()));
+        holder.numberOfLaps.setText(numlaps + String.valueOf(run.getNumberOfLaps()));
+        holder.lapLength.setText(lengthlaps + String.valueOf(run.getTime()));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
