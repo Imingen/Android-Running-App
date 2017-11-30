@@ -9,8 +9,6 @@
     tools:layout_editor_absoluteY="25dp"
     tools:layout_editor_absoluteX="0dp">
 
-
-
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
@@ -20,12 +18,11 @@
         app:srcCompat="@drawable/trophy_hd"
         />
 
-
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="@string/title_ach_detail"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="30sp"
@@ -36,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Description"
+        android:text="@string/description_ach_detail"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />

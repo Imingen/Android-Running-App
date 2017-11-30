@@ -6,5 +6,4 @@
         android:id="@+id/signoutButton"
         android:title="@string/signout"
         app:showAsAction="never" />
-
 </menu>

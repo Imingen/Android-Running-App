@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by Marius on 16.10.2017.
+ * Represents a single Achievement object with all the necessary data
  */
 
 public class Achievement {
@@ -15,7 +16,6 @@ public class Achievement {
 
     private String achievementName;
     private String achievementDescription;
-
 
     private int achievementDifficulty;
     private int logoId;
@@ -29,6 +29,7 @@ public class Achievement {
         achievements.add(this);
     }
 
+    //Fill the achievemt list with data.
     public static List<Achievement> achievementExampleData() {
         List<Achievement> ach = new ArrayList<>();
         String[] names = {"Level 0", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7",
@@ -66,7 +67,6 @@ public class Achievement {
     public void setAchievementName(String achievementName) {
         this.achievementName = achievementName;
     }
-
 
 
     public int getLogoId() {

@@ -4,6 +4,4 @@
     android:layout_height="match_parent"
     android:id="@android:id/list"
     tools:context="com.example.imingen.workoutpal.fragments.SettingsFragment">
-
-
 </ListView>

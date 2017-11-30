@@ -43,15 +43,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
 
-    private Toast toast;
-
     private static final String SUCCESSFULL_REG = "Registration successful";
     private static final String PASSWORD_LENGTH_ERROR = "Password must be atleast 6 characters long";
     private static final String BLANK_FIELDS_ERROR = "Fields can't be blank";
     private static final String BAD_EMAIL_FORMAT_ERROR = "Not a valid email";
 
     private View view;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
 
         view = findViewById(R.id.register_activity);
+        //Remvoes keyboard
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -78,8 +76,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerOnclick(View view){
         register();
+        InputMethodManager inputMethodManager = (InputMethodManager) RegisterActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(RegisterActivity.this.getCurrentFocus().getWindowToken(), 0);
     }
 
+    /**
+     * Creates a user in the database by sending email and password to the Firebase method:
+     * createUserWithEmailAndPassword
+     * This method will also create a node in the real time database with the userID that
+     * is created when registering a new user. This ensures that each user also has a node in the database
+     * with their information and data
+     */
     private void register() {
         progressBar.setVisibility(View.VISIBLE);
 
@@ -99,9 +106,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 try {
                                     if (task.isSuccessful()) {
                                         progressBar.setVisibility(View.INVISIBLE);
+                                        //Pushes the newly created userID to the database and creates a node with
+                                        //this ID under the "USERS" node
                                         String userID = firebaseAuth.getCurrentUser().getUid();
                                         databaseReference = FirebaseDatabase.getInstance()
                                                 .getReference().child("Users").child(userID);
+
 
                                         HashMap<String, String> userMap = new HashMap<String, String>();
                                         userMap.put("mail", email_);
@@ -110,7 +120,6 @@ public class RegisterActivity extends AppCompatActivity {
                                                 new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                        Log.d("XD", "createUserWithEmail:success");
                                                         progressBar.setVisibility(View.INVISIBLE);
                                                         Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                                                         //Pressing the back button will exit the app instead of going back to the login page
@@ -134,7 +143,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                                 catch (FirebaseAuthInvalidCredentialsException e){
                                     if(e.getMessage() == PASSWORD_LENGTH_ERROR){
-                                        Log.i("JAU", e.getMessage());
                                         makeToast(e.getMessage());
                                     }
 
@@ -149,7 +157,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Helper method for making toasts
+     * @param message The toast message
+     */
     private void makeToast(String message){
         Toast toast = Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG);
         TextView v = toast.getView().findViewById(android.R.id.message);

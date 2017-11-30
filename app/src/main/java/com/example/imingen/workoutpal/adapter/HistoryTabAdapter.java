@@ -1,6 +1,5 @@
 package com.example.imingen.workoutpal.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +9,9 @@ import android.widget.TextView;
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.models.Run;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-/**
- * Created by Marius on 16.10.2017.
- */
 
 public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.ViewHolder>{
     private List<Run> runs;
@@ -38,7 +31,6 @@ public class HistoryTabAdapter extends RecyclerView.Adapter<HistoryTabAdapter.Vi
             lapLength = view.findViewById(R.id.lapLength);
         }
     }
-
 
     public HistoryTabAdapter(List<Run> data) {
         this.runs = data;

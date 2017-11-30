@@ -9,6 +9,8 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,13 +29,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class AchievementsTabFragment extends Fragment {
 
     private List<Achievement> achlist = new ArrayList<>();
     private ValueEventListener updateUIWithAchievements;
-
 
     private RecyclerView recyclerView;
     private AchievementTabAdapter adapter;
@@ -51,28 +54,28 @@ public class AchievementsTabFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
+        setHasOptionsMenu(true);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Achievements");
+        databaseReference.keepSynced(true);
 
         updateUIWithAchievements = new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 
-
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Achievement achievement = snapshot.getValue(Achievement.class);
                     achlist.add(achievement);
+
                     adapter.notifyItemInserted(achlist.size());
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         };
-
 
         databaseReference.addValueEventListener(updateUIWithAchievements);
 
@@ -101,42 +104,8 @@ public class AchievementsTabFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-//
-//        childEventListener = new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//
-//                Achievement ach = dataSnapshot.getValue(Achievement.class);
-//                achlist.add(ach);
-//                adapter.notifyItemInserted(achlist.size());
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        };
-//
-//        databaseReference.addChildEventListener(childEventListener);
-//    }
-
-
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_signout, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

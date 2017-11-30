@@ -12,6 +12,7 @@ import gr.net.maroulis.library.EasySplashScreen;
 /**
  * Heavliy inspired by
  * https://www.youtube.com/watch?v=gt1WYT0Qpfk
+ * Activity does not do anything in background while splashscreen is up, it is just for fancy
  */
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -22,7 +23,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         EasySplashScreen splashScreen = new EasySplashScreen(SplashScreenActivity.this)
                 .withFullScreen()
                 .withTargetActivity(MainActivity.class)
-                .withSplashTimeOut(500)
+                .withSplashTimeOut(1500)
                 .withBackgroundColor(Color.parseColor("#13a48c"))
                 .withLogo(R.drawable.logo)
                 .withBeforeLogoText("WorkoutPal");

@@ -12,15 +12,10 @@ import com.example.imingen.workoutpal.models.Achievement;
 
 import java.util.List;
 
-/**
- * Created by Marius on 16.10.2017.
- */
-
 public class AchievementTabAdapter extends RecyclerView.Adapter<AchievementTabAdapter.ViewHolder> {
 
     private List<Achievement> achievements;
     private OnItemClickListener mlistener;
-
 
     public interface OnItemClickListener {
         void onItemClicked(int position);

@@ -9,7 +9,7 @@
     <string name="drawer_open">\"Drawer open\"</string>
     <string name="drawer_close">Drawer closed</string>
     <string name="home_activity_label">WorkoutPal HOME</string>
-    <string name="history_activity_label">WorkoutPal HISTORY</string>
+    <string name="history_activity_label">History</string>
     <string name="history_tab_placeholder">History tab</string>
     <string name="achievements_tab_placeholder">Achievement tab</string>
     <string name="achievements_tab_text">Achievements</string>
@@ -35,6 +35,18 @@
     <string name="lengthlap_historytab">"Length per lap: "</string>
     <string name="voice_setting">Voice language</string>
     <string name="voice_setting_picker">Choose a language for voice</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="title_ach_detail">Title</string>
+    <string name="description_ach_detail">Description</string>
+    <string name="run_runactivity">RUN!</string>
+    <string name="start_runactivity">START</string>
+    <string name="laps_left">Laps left:</string>
+    <string name="mute_audio">Mute audio</string>
+    <string name="audio_muted">Audio muted</string>
+    <string name="mute_voice">Mute voice</string>
+    <string name="register_regactivity">Register</string>
+    <string name="need_an_account">Need an account?</string>
+    <string name="log_in_loginactivity">Log in</string>
 
     <string-array name="voices">
         <item>en_US</item>
@@ -50,6 +62,12 @@
         <item>French</item>
         <item>German</item>
         <item>Norwegian</item>
+    </string-array>
+
+    <string-array name="sort_history_array">
+        <item>Newest</item>
+        <item>Oldest</item>
+        <item>Most laps</item>
     </string-array>
 
 </resources>

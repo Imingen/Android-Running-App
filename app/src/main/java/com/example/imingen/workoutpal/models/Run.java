@@ -14,18 +14,15 @@ import java.util.Random;
 
 /**
  * Created by Marius on 15.10.2017.
+ * Represents a single run and contains all the necessary data
  */
 
 public class Run implements Parcelable{
 
-
-
     private int numberOfLaps;
-
     private int lengthMinutes;
     private int lengthSeconds;
     private Date dateOfRun;
-
 
     public Run(){}
 
@@ -36,22 +33,7 @@ public class Run implements Parcelable{
         this.numberOfLaps = lapnum;
     }
 
-
-    public void startRun() {
-
-    }
-
-    public void stopRun() {
-
-    }
-
-    public void pauseRun(){
-
-    }
-
     // region getters and setters
-
-
 
     public int getNumberOfLaps() {
         return numberOfLaps;
@@ -117,7 +99,6 @@ public class Run implements Parcelable{
         parcel.writeInt(this.getLengthSeconds());
         parcel.writeInt(this.getNumberOfLaps());
     }
-
 
     public static final Parcelable.Creator<Run> CREATOR = new Parcelable.Creator<Run>() {
         @Override

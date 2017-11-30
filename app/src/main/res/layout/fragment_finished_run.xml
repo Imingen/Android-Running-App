@@ -2,11 +2,9 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tired_runner">
-
 
     <TextView
         android:id="@+id/congratsTextView"
@@ -15,12 +13,11 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="34dp"
-        android:elevation="100dp"
         android:shadowColor="@color/cardview_shadow_start_color"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
-        android:text="Placeholder"
+        android:text="@string/placeholder"
         android:textColor="@android:color/holo_red_light"
         android:textSize="48sp"
         app:layout_constraintHorizontal_bias="0.504"

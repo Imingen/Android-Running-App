@@ -9,6 +9,7 @@ import com.example.imingen.workoutpal.R;
 
 public class AchievementDetailsActivity extends AppCompatActivity {
 
+    //Simple view of a single completed achievement with more details
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -7,7 +7,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.imingen.workoutpal.R;
@@ -65,17 +64,10 @@ public class HistoryActivity extends AppCompatActivity {
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar, R.id.nav_history);
     }
 
-
     @Override
     protected void onStart(){
         navigationDrawerFragment.updateCheckedItem(R.id.nav_history);
         super.onStart();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_signout, menu);
-        return true;
     }
 
 
@@ -96,5 +88,4 @@ public class HistoryActivity extends AppCompatActivity {
         startActivity(loginIntent);
         finish();
     }
-
 }

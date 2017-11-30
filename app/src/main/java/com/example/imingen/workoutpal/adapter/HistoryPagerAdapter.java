@@ -7,12 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Marius on 16.10.2017.
- */
-
 public class HistoryPagerAdapter extends FragmentPagerAdapter {
-
 
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentTitleList = new ArrayList<>();

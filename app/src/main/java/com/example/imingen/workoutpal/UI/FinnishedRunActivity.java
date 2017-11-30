@@ -34,6 +34,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -62,19 +64,23 @@ public class FinnishedRunActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
         setUpDrawer();
+        //Make a new notification when the workout is finnished
         notificationHelper = new NotificationHelper(getApplicationContext());
         startNotification("Workout complete!", "Good job m9-1");
+
+        //Gets the current selected language from the settings
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String [] voice = prefs.getString("languages", "").split("_");
-
-        String language = voice[0];
-        String region = voice[1];
-        locale = new Locale(language, region);
-        locale.setDefault(locale);
-
+        if(voice.length > 1){
+            String language = voice[0];
+            String region = voice[1];
+            locale = new Locale(language, region);
+            locale.setDefault(locale);
+        }
+        else{
+            locale = Locale.ENGLISH;
+        }
 
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -86,8 +92,9 @@ public class FinnishedRunActivity extends AppCompatActivity {
                 else{
                     textToSpeech.setLanguage(locale);
                     textToSpeech.setSpeechRate(0.9f);
-                    Log.e("JAU2", locale.getLanguage());
 
+                    //Hardcoded all the strings and the strings are taken from Google Translate
+                    //Preferably this would be done programmatically
                     if(locale.getLanguage().equals("fr")){
                         textToSpeech("Félicitations, vous avez terminé l'entraînement d'aujourd'hui!");
                     }
@@ -125,7 +132,6 @@ public class FinnishedRunActivity extends AppCompatActivity {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     databaseRuns.add(snapshot.getValue(Run.class));
                 }
-                Log.i("XD2", Integer.toString(databaseRuns.size()));
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -137,9 +143,21 @@ public class FinnishedRunActivity extends AppCompatActivity {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Achievement achievement = snapshot.getValue(Achievement.class);
                     databaseAchievements.add(achievement);
-//                    Log.i("XD2", achievement.getAchievementDescription());
+                    //Sorting the achievements from the database, since Level 10 comes
+                    //after level 1 and before level 2. Sorting before pushing all the achievements
+                    //to the database doesnt work.
+                    Collections.sort(databaseAchievements, new Comparator<Achievement>() {
+                        @Override
+                        public int compare(Achievement achievement, Achievement t1) {
+                            String [] a1 = achievement.getAchievementName().split(" ");
+                            String [] a2 = t1.getAchievementName().split(" ");
+
+                            return Integer.parseInt(a1[1]) - Integer.parseInt(a2[1]);
+                        }
+                    });
                 }
                 if(databaseAchievements != null){
+                    //A user gets an achievement for each run they do up until 10
                     if(databaseAchievements.size() > databaseRuns.size()){
                         userRef.child("Achievements").push().setValue(databaseAchievements.get(databaseRuns.size() - 1));
                     }
@@ -150,12 +168,7 @@ public class FinnishedRunActivity extends AppCompatActivity {
 
             }
         });
-        //Loop trough both lists that have reference to the achievements and runs from database
-        //and add a achievement for each run the user have completed
-
-
     }
-
 
     @Override
     protected void onStop() {
@@ -169,7 +182,9 @@ public class FinnishedRunActivity extends AppCompatActivity {
         notificationHelper.getNotificationManager().cancel(2);
     }
 
-    //TODO this method is kinda meh right?
+    /**
+     * Starts MainActivity on backpressed so user cant get back into the run they just completed
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -177,6 +192,10 @@ public class FinnishedRunActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Returns to MainActivity if the "Return home" button is pressed
+     * @param view
+     */
     public void returnHome(View view){
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -189,6 +208,7 @@ public class FinnishedRunActivity extends AppCompatActivity {
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar, R.id.nav_main);
     }
 
+    //The three (3) next methods are taken from https://stackoverflow.com/questions/27968146/texttospeech-with-api-21
     public void textToSpeech(String text){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ttsGreater21(text);
@@ -197,8 +217,6 @@ public class FinnishedRunActivity extends AppCompatActivity {
         }
     }
 
-
-    //Tatt fra https://stackoverflow.com/questions/27968146/texttospeech-with-api-21
     @SuppressWarnings("deprecation")
     private void ttsUnder20(String text) {
         HashMap<String, String> map = new HashMap<>();
@@ -212,6 +230,11 @@ public class FinnishedRunActivity extends AppCompatActivity {
         textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 
+    /**
+     * Helper method for starting a notification
+     * @param title Title of the notification, should NOT be the app name
+     * @param message Message of the notification
+     */
     public void startNotification(String title, String message){
         builder = notificationHelper.getChannelNotification(title, message, FinnishedRunActivity.class);
         notificationManager = notificationHelper.getNotificationManager();

@@ -17,7 +17,7 @@ import com.example.imingen.workoutpal.UI.RunActivity;
 
 /**
  * Created by Mingen on 21-Nov-17.
- *
+ * A class that is heavily inspired by https://www.youtube.com/watch?v=ub4_f6ksxL0
  */
 
 public class NotificationHelper extends ContextWrapper {
@@ -71,10 +71,9 @@ public class NotificationHelper extends ContextWrapper {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, new Intent(this, activity), PendingIntent.FLAG_UPDATE_CURRENT);
         return  new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentTitle(title)
+                .setOnlyAlertOnce(true)
                 .setContentText(message)
                 .setSmallIcon(R.drawable.ic_runner)
                 .setContentIntent(pendingIntent);
     }
-
-
 }

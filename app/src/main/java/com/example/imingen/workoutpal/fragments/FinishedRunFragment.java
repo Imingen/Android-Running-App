@@ -18,21 +18,13 @@ import com.example.imingen.workoutpal.R;
 import java.util.HashMap;
 import java.util.Locale;
 
-/**
- * Created by Mingen on 01-Nov-17.
- */
-
 public class FinishedRunFragment extends Fragment {
 
     TextView congratz;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     @Nullable
@@ -43,7 +35,5 @@ public class FinishedRunFragment extends Fragment {
         congratz.setText("Congratulations \n you finished todays workout");
         congratz.setGravity(Gravity.CENTER_HORIZONTAL);
         return view;
-
-
     }
 }

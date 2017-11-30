@@ -21,7 +21,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:text="RUN!"
+        android:text="@string/run_runactivity"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="@color/colorAccent"
         android:textSize="52sp"
@@ -46,7 +46,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <Button
         android:id="@+id/start_run"
         android:layout_width="174dp"
@@ -56,8 +55,7 @@
         android:layout_marginRight="8dp"
         android:background="@color/colorPrimary"
         android:elevation="24dp"
-        android:onClick="startRun"
-        android:text="START"
+        android:text="@string/start_runactivity"
         android:textColor="@color/cardview_light_background"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="-7dp"
         android:layout_marginTop="39dp"
-        android:text="Laps left:"
+        android:text="@string/laps_left"
         android:textColor="@color/colorAccent"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="@+id/start_run"
@@ -93,8 +91,8 @@
         android:layout_height="12dp"
         android:layout_marginBottom="25dp"
         android:checked="false"
-        android:textOff="Mute audio"
-        android:textOn="Audio muted"
+        android:textOff="@string/mute_audio"
+        android:textOn="@string/audio_muted"
         app:layout_constraintBottom_toTopOf="@+id/start_run"
         tools:checked="false"
         android:layout_marginRight="0dp"
@@ -105,12 +103,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:text="Mute voice"
+        android:text="@string/mute_voice"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/start_run"
         android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/start_run" />
-
 
 </android.support.constraint.ConstraintLayout>

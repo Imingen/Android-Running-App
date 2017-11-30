@@ -42,15 +42,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-
-/**
- * Created by Marius on 13.10.2017.
- */
 
 public class MainActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1;
@@ -60,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentDate;
     private static final String ERROR_NO_NUMBER_OF_LAPS = "Please enter the desired number of laps";
     private static final String ERROR_NO_LENGTH_OF_LAPS = "Please enter the desired length of the laps";
-    //private double lengthOfLaps;
-   // private int numberOfLaps;
+
     private SimpleDateFormat d;
     private EditText nLaps;
     TextView dateTW;
@@ -113,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 if(nLaps.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(), ERROR_NO_NUMBER_OF_LAPS, Toast.LENGTH_LONG).show();
                 }
-               else if(secondsPicker.getValue() == 0){
+               else if(secondsPicker.getValue() == 0 && minutePicker.getValue() == 0){
                     Toast.makeText(getApplicationContext(), ERROR_NO_LENGTH_OF_LAPS, Toast.LENGTH_LONG).show();
                 }
                 else{
@@ -138,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Sets the time on the UI
+     */
     public void updateTimeUI(){
         final Handler handler = new Handler();
         Runnable run = new Runnable() {
@@ -150,10 +149,10 @@ public class MainActivity extends AppCompatActivity {
         handler.post(run);
     }
 
-    public void startRun(View view){
-
-    }
-
+    /**
+     * Creates the new run object with data that user has inputed and todays date
+     * @return A run object
+     */
     private Run createNewRun() {
         Date date = null;
         int minutes = minutePicker.getValue();
@@ -175,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar, R.id.nav_main);
     }
 
+    /**
+     * Gets the current date
+     * @return A string representation of the current date
+     */
     private String getCurrentDate() {
         long date = System.currentTimeMillis();
         d = new SimpleDateFormat("E MMM dd, yyyy \n HH:mm");
@@ -188,6 +191,10 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Used to load a set of achievements to the database. Only run when needed new or updated
+     * achievements in the database
+     */
     public void loadAchievements(){
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Achievements");
         List<Achievement> ach = Achievement.achievementExampleData();
@@ -207,26 +214,13 @@ public class MainActivity extends AppCompatActivity {
         if(user == null){
             sendToLoginPage();
         }
-
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_signout, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

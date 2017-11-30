@@ -24,8 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.Exclude;
 
 public class LoginActivity extends AppCompatActivity {
-    private Toolbar toolbar;
 
+    private Toolbar toolbar;
     private TextInputLayout loginEmail, loginPassword;
 
     private FirebaseAuth firebaseAuth;
@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private View view;
     private ProgressBar progressBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +48,10 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBar = findViewById(R.id.progress_bar);
 
         view = findViewById(R.id.login_activity);
+        //Removes the keyboard when used touches the screen
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -68,20 +68,25 @@ public class LoginActivity extends AppCompatActivity {
         String password = loginPassword.getEditText().getText().toString();
         progressBar.setVisibility(View.VISIBLE);
 
-
         if(email.trim().isEmpty() || password.toString().trim().isEmpty()){
             Toast.makeText(LoginActivity.this, NO_INPUT_ERROR, Toast.LENGTH_SHORT).show();
         }
 
-
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
             login(email, password);
+            //Removes keyboard
             InputMethodManager inputMethodManager = (InputMethodManager) LoginActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(LoginActivity.this.getCurrentFocus().getWindowToken(), 0);
         }
 
     }
 
+    /**
+     * Method that handles the log in by sending the email and password to the firebase method:
+     * signInWithEmailAndPassword
+     * @param email The users email
+     * @param password The users password
+     */
     private void login(String email, String password) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -98,14 +103,16 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         }
                         else{
-                            Log.w("XD", "SigninUserWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, INVALID_EMAIL, Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 });
     }
 
+    /**
+     * Send the user to the register activity
+     * @param view
+     */
     public void loginRegisterOnClick(View view){
         Intent register_intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(register_intent);

@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.IntDef;
@@ -23,6 +24,7 @@ public class MyService extends Service {
     private int secondsMem;
 
     private static final String NOTIFICATION_TITLE = "Exercise in progress, keep it up!";
+    //The notification message changes during a workout, hence the none static final
     private String notificationMessage;
 
     private NotificationHelper notificationHelper;
@@ -30,14 +32,13 @@ public class MyService extends Service {
     private NotificationManager notificationManager;
 
     public MyService() {
+        //Empty required constructor
     }
-
 
     @Override
     public void onCreate() {
         super.onCreate();
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -84,7 +85,6 @@ public class MyService extends Service {
                 totalSeconds--;
             }
         }
-        Log.i("XD5", Integer.toString(totalSeconds));
         updateNotification(NOTIFICATION_TITLE, "Timer " + Integer.toString(totalSeconds), secondsMem, totalSeconds);
         return  totalSeconds;
     }

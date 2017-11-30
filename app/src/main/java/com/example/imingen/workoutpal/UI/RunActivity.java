@@ -1,86 +1,48 @@
 package com.example.imingen.workoutpal.UI;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.NotificationManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.imingen.workoutpal.R;
 import com.example.imingen.workoutpal.Service.MyService;
-import com.example.imingen.workoutpal.fragments.CountdownFragment;
-import com.example.imingen.workoutpal.fragments.HistoryTabFragment;
-import com.example.imingen.workoutpal.fragments.NavigationDrawerFragment;
-import com.example.imingen.workoutpal.fragments.SettingsFragment;
 import com.example.imingen.workoutpal.helpers.NotificationHelper;
-import com.example.imingen.workoutpal.models.Achievement;
 import com.example.imingen.workoutpal.models.Run;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 public class RunActivity extends AppCompatActivity{
 
-    int ok;
     Run run;
     TextView timerTextView;
     TextView runOrPause;
     TextView lapsLefTextView;
     Button runButton;
-    Switch aSwitch;
     int numberOfLaps;
     TextToSpeech textToSpeech;
     Handler handler;
     Runnable runnable;
-    FragmentManager fragmentManager;
-    CountdownFragment countdownFragment;
+    Switch aSwitch;
+
     //Timer logic
     int minutes;
     int seconds;
@@ -102,8 +64,6 @@ public class RunActivity extends AppCompatActivity{
     private MyService myService;
     private Locale locale;
 
-    String language;
-
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -111,19 +71,17 @@ public class RunActivity extends AppCompatActivity{
             myService = myBinder.getService();
             isBound = true;
         }
-
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             isBound = false;
         }
     };
 
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("Users").child(firebaseAuth.getUid()).child("Runs");
@@ -139,27 +97,34 @@ public class RunActivity extends AppCompatActivity{
         runButton = findViewById(R.id.start_run);
         lapsLefTextView = findViewById(R.id.lapsLeftTextView);
 
+        aSwitch = findViewById(R.id.mutedSwitch);
+
         minutes = run.getLengthMinutes();
         seconds = run.getLengthSeconds();
         numberOfLaps = run.getNumberOfLaps();
+        //times two for equal amounts of pause and runs
         numberOfLaps = numberOfLaps * 2 ;
 
         updateTimer(minutes, seconds);
+        //Sets the number of laps left to just the amount of laps supposed to be ran
         lapsLefTextView.setText(Integer.toString(numberOfLaps / 2));
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //Gets the language code and the region code of the language. Cant make new functional
+        //Locale based on just language
         String [] voice = prefs.getString("languages", "").split("_");
-        Log.e("JAU", Integer.toString(voice.length));
-        for(String s : voice){
-            Log.e("JAU", s);
-        }
-        String language = voice[0];
-        String region = voice[1];
-        locale = new Locale(language, region);
-        locale.setDefault(locale);
-//        Log.e("JAU", locale.getLanguage());
-//        Log.e("JAU", locale.getCountry());
 
+        //This means that a language is chosen in settings, to prevent nullpointer
+        if(voice.length > 1){
+            String language = voice[0];
+            String region = voice[1];
+            locale = new Locale(language, region);
+            locale.setDefault(locale);
+        }
+        //If not language is set from the settings within the app, then set the language to english
+        else{
+            locale = Locale.ENGLISH;
+        }
 
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -169,8 +134,6 @@ public class RunActivity extends AppCompatActivity{
                             Toast.LENGTH_LONG).show();
                 }
                 else {
-
-
                     textToSpeech.setLanguage(locale);
                     textToSpeech.setSpeechRate(0.9f);
                 }
@@ -192,96 +155,26 @@ public class RunActivity extends AppCompatActivity{
                 startRun2();
             }
         });
-
-
-
     }
 
-    //Send all info to the service when bound
-    // Bind the service in and onstart and onresume
-    //start the service in oncreate
-    // start the method that run the update of watch and talks to the user when pressing a button
-    // if i understand correctly i only need to update the UI from the serivce. it is to make sure
-    // that the clock and voice dontr stop when changing apps, e.g to a music app cuz who doesnt want to listen to music while runnign
-
-//    public void startRun(View view) {
-//        runButton.setEnabled(false);
-////        //Have to have the time in only seconds for easier checking
-//        totalSeconds = seconds + (minutes * 60);
-////        //Keep the inital value of totalseconds so that we can reset the timer every lap since both laps and pauses are the same length
-//        final int totalSecondsMemory = totalSeconds;
-//        timeUp = false;
-//        runnable = new Runnable() {
-//            @Override
-//            public void run() {
-////                //Casting to int will round it down
-//                int minutes = (int) totalSeconds / 60;
-//                int seconds = totalSeconds - minutes * 60;
-////
-//////            //If the timer is up and there are no more laps left
-//                if(totalSeconds < 0 && numberOfLaps == 0){
-//                    timerTextView.setText("00:00");
-//                    timeUp = true;
-//                }
-////                //If total seconds are up but there are more laps left, reset the timer by adding
-////                //resetting totalseconds
-////
-////                //Updates the timer
-//                if(timeUp == false){
-//                    if(totalSeconds == 0 && numberOfLaps > 0){
-//                        timerTextView.setText("00:00");
-//                        numberOfLaps--;
-//                        totalSeconds = totalSecondsMemory + 1;
-//                        if((numberOfLaps % 2) != 0 && numberOfLaps != 1){
-//                            textToSpeech("Pause for" + Integer.toString(totalSecondsMemory) + " seconds");
-//                        }
-//                    }
-//                    if((numberOfLaps % 2) == 0){
-//                        if(totalSeconds <= 3){
-//                            textToSpeech(Integer.toString(totalSeconds));
-//                        }
-//                        runOrPause.setText("RUN!");
-//                    }
-//
-//                    if((numberOfLaps % 2) != 0 && numberOfLaps != 1) {
-//                        if(totalSeconds == 4){
-//                            textToSpeech("Starting in");
-//                        }
-//                        if(totalSeconds <= 3){
-//                            textToSpeech(Integer.toString(totalSeconds));
-//                        }
-//                        runOrPause.setText("PAUSE!");
-//                        lapsLefTextView.setText(Integer.toString(numberOfLaps / 2));
-//                    }
-//                    updateTimer(minutes, seconds);
-//                    handler.postDelayed(this, 1000);
-//
-//                    if(numberOfLaps == 1){
-//                        timeUp = true;
-//                    }
-//                }
-//                //Countdown the totalseconds, makes it easier
-//                totalSeconds--;
-//                if(timeUp == true){
-//                    handler.removeCallbacks(this);
-//                    finnishedRun();
-//                }
-//            }
-//        };
-//        handler.post(runnable);
-//    }
-
+    /**
+     * Method is called startRun2 because a startRun1 used to exist, but what was put down for lack of usefulness to the greater good.
+     * This method works with the totalseconds that are counted down in background service and updated GUI accordingly
+     * and gives TTS somewhat correct instructions.
+     */
     public void startRun2(){
         handler = new Handler();
+        //To keep track of the inital value of total seconds so it can easily be re-adjusted when one lap is over
         final int totalSecondsMemory = totalSeconds;
         timeUp = false;
         runnable = new Runnable() {
             @Override
             public void run() {
+                Boolean mute = aSwitch.isChecked();
+                //Gets the current totalseconds from service, that counts down in background
                 int total = myService.countDownSeconds();
                 int minutes = total / 60;
                 int seconds = total - minutes * 60;
-                Log.i("XD6", Integer.toString(total));
 
                  //If the timer is up and there are no more laps left
                 if(total < 0 && numberOfLaps == 0){
@@ -293,22 +186,22 @@ public class RunActivity extends AppCompatActivity{
                         timerTextView.setText("00:00");
                         numberOfLaps--;
                         total = totalSecondsMemory + 1;
-                        if((numberOfLaps % 2) != 0 && numberOfLaps != 1){
+                        if((numberOfLaps % 2) != 0 && numberOfLaps != 1 && !mute){
                             textToSpeech("Pause for" + Integer.toString(totalSecondsMemory) + " seconds");
                         }
                     }
                     if((numberOfLaps % 2) == 0){
-                        if(total <= 3){
+                        if(total <= 3 && !mute){
                             textToSpeech(Integer.toString(total));
                         }
                         runOrPause.setText("RUN!");
                     }
-
+                    //If number of laps left is odd, then it is currently a pause in your running
                     if((numberOfLaps % 2) != 0 && numberOfLaps != 1) {
-                        if(total == 4){
+                        if(total == 4 && !mute){
                             textToSpeech("Starting in");
                         }
-                        if(total <= 3){
+                        if(total <= 3 && !mute){
                             textToSpeech(Integer.toString(total));
                         }
                         runOrPause.setText("PAUSE!");
@@ -317,6 +210,8 @@ public class RunActivity extends AppCompatActivity{
                     updateTimer(minutes, seconds);
                     handler.postDelayed(this, 1000);
 
+                    //If number of laps left is one, that means it is a pause and since it is the last
+                    //we dont want to count or do anything here but rather finish up the workout
                     if(numberOfLaps == 1){
                         timeUp = true;
                     }
@@ -331,7 +226,6 @@ public class RunActivity extends AppCompatActivity{
         handler.post(runnable);
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -339,7 +233,13 @@ public class RunActivity extends AppCompatActivity{
         bindService(intent, connection, BIND_AUTO_CREATE);
     }
 
-
+    //Makes sure the notification is also cancelled on backpressed
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+        notificationHelper.getNotificationManager().cancel(1);
+    }
 
     @Override
     protected void onDestroy() {
@@ -347,15 +247,11 @@ public class RunActivity extends AppCompatActivity{
         handler.removeCallbacks(runnable);
         unbindService(connection);
         this.stopService(new Intent(this, MyService.class));
-
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
+    /**
+     * Pushes the completed run to the database, cancels notification and starts the next activity
+     */
     public void finnishedRun(){
         databaseReference.push().setValue(run);
         //Cancels the current notification
@@ -366,8 +262,7 @@ public class RunActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-
-
+    //The next three (3) methods are taken from https://stackoverflow.com/questions/27968146/texttospeech-with-api-21
     public void textToSpeech(String text){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ttsGreater21(text);
@@ -376,7 +271,6 @@ public class RunActivity extends AppCompatActivity{
         }
     }
 
-    //Tatt fra https://stackoverflow.com/questions/27968146/texttospeech-with-api-21
     @SuppressWarnings("deprecation")
     private void ttsUnder20(String text) {
         HashMap<String, String> map = new HashMap<>();

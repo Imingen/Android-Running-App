@@ -54,7 +54,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.98" />
 
-
             <NumberPicker
                 android:id="@+id/lapLengthMinutes"
                 android:layout_width="wrap_content"
@@ -111,7 +110,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/startRunButton"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
-
 
         </android.support.constraint.ConstraintLayout>
 
